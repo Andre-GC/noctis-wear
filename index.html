@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1A1A1A">
 <title>Noctis Wear</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
@@ -100,9 +101,7 @@
 
     /* Ventana de compra: ancha para el formulario, angosta para la confirmación */
     .dlg-wide { max-width: 64rem; }
-    .dlg-narrow { max-width: 26rem; }
     .co-dialog { padding: 1.75rem 2rem; max-height: calc(100vh - 1rem); max-height: calc(var(--app-h) - 1rem); padding-bottom: calc(1.75rem + env(safe-area-inset-bottom, 0px)); }
-    .co-dialog.dlg-narrow { padding: 2rem; }
     .co-input { padding: 0.65rem 0.75rem; font-size: 16px; min-height: 44px; }
     .co-input[aria-invalid="true"], .co-input.rejected { border-color: #f87171; }
     .field-error { color: #fca5a5; font-size: 0.8rem; margin-top: 0.35rem; }
@@ -115,7 +114,6 @@
     .sec-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: #9ca3af; margin: 0 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid #262626; }
     @media (max-width: 640px) {
         .co-dialog { padding: 1.1rem 1rem; }
-        .co-dialog.dlg-narrow { padding: 1.5rem 1rem; }
     }
 
     /* ===== Ventanas (carrito y compra) en #1A1A1A ===== */
@@ -156,18 +154,21 @@
     .city-opt[aria-selected="true"] .tick { visibility: visible; }
 
     /* ===== Mensaje emergente (toast) ===== */
-    #toast { position: fixed; left: 50%; top: calc(var(--app-h) - 1.5rem - env(safe-area-inset-bottom, 0px)); bottom: auto; transform: translate(-50%, -100%); z-index: 70; width: max-content; max-width: min(92vw, 28rem); display: flex; align-items: center; gap: .75rem; padding: .85rem 1.1rem .95rem .9rem; background: #1A1A1A; color: var(--bone); border: 1px solid var(--blood); border-left: 5px solid var(--blood); border-radius: .6rem; box-shadow: 0 0 0 1px rgba(0,0,0,.6), 0 14px 40px rgba(0,0,0,.85), 0 0 28px rgba(132,34,74,.45); font-size: .95rem; line-height: 1.35; text-align: left; overflow: hidden; animation: toast-in .28s ease-out; }
+    /* Avisos: píldora compacta y centrada, vidrio esmerilado, un icono de color y dos líneas cortas (título + detalle).
+       El color del icono indica el tipo: vino = hecho, ámbar = límite o falta algo, blanco = información, rojo = error */
+    #toast { --tc: #A02C5E; --ic: #F5F5F0; position: fixed; left: 50%; top: calc(.75rem + env(safe-area-inset-top, 0px)); transform: translateX(-50%); z-index: 100; width: fit-content; max-width: min(92vw, 21rem); display: flex; align-items: center; gap: .7rem; padding: .55rem 1.1rem .55rem .6rem; background: rgba(36,36,38,.78); -webkit-backdrop-filter: saturate(180%) blur(22px); backdrop-filter: saturate(180%) blur(22px); color: var(--bone); border: 1px solid rgba(255,255,255,.12); border-radius: 9999px; box-shadow: 0 10px 34px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.06) inset; font-family: Georgia, 'Times New Roman', serif; line-height: 1.25; text-align: left; overflow: hidden; animation: toast-in-top .38s cubic-bezier(.2,1.1,.3,1); }
     #toast.hidden { display: none; }
-    #toast.top { bottom: auto; top: calc(1rem + env(safe-area-inset-top, 0px)); transform: translateX(-50%); animation-name: toast-in-top; }
-    #toast .toast-icon { flex-shrink: 0; width: 1.6rem; height: 1.6rem; border-radius: 9999px; background: var(--blood); color: var(--bone); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .9rem; }
-    #toast.warn { border-color: #f87171; border-left-color: #f87171; box-shadow: 0 0 0 1px rgba(0,0,0,.6), 0 14px 40px rgba(0,0,0,.85), 0 0 28px rgba(248,113,113,.35); }
-    #toast.warn .toast-icon { background: #f87171; color: #1A1A1A; }
-    #toast .toast-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--blood); transform-origin: left; animation: toast-bar 4.5s linear forwards; }
-    #toast.warn .toast-bar { background: #f87171; }
-    #toast:hover .toast-bar { animation-play-state: paused; }
-    @keyframes toast-in { from { opacity: 0; transform: translate(-50%, calc(-100% + 14px)); } to { opacity: 1; transform: translate(-50%, -100%); } }
-    @keyframes toast-in-top { from { opacity: 0; transform: translate(-50%, 14px); } to { opacity: 1; transform: translate(-50%, 0); } }
-    @keyframes toast-bar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+    #toast .toast-icon { flex-shrink: 0; width: 2rem; height: 2rem; border-radius: 9999px; background: var(--tc); color: var(--ic); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; }
+    #toast .toast-msg { display: flex; flex-direction: column; min-width: 0; }
+    #toast .toast-title { font-size: .9rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 0; text-transform: none; }
+    #toast .toast-text { font-size: .78rem; font-weight: 400; color: #c4c8d0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #toast .toast-text:empty { display: none; }
+    #toast.ok    { --tc: #A02C5E; --ic: #F5F5F0; }
+    #toast.warn  { --tc: #fbbf24; --ic: #1A1A1A; }
+    #toast.info  { --tc: #F5F5F0; --ic: #0D0D0D; }
+    #toast.error { --tc: #f87171; --ic: #1A1A1A; }
+    #toast .toast-bar { display: none; }
+    @keyframes toast-in-top { from { opacity: 0; transform: translate(-50%, -18px) scale(.9); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
 
     /* ===== Altura real visible (evita que la barra del navegador tape el pie del carrito) ===== */
     /* --app-h la calcula el script con window.innerHeight; si no existe, se usa 100dvh */
@@ -252,23 +253,6 @@
     /* Pie de página: mismo color que el encabezado */
     #app-footer { background: #1A1A1A; border-top: 1px solid #333; border-bottom: 3px solid var(--blood); padding-top: 1.5rem; padding-bottom: 1.5rem; color: #c4c8d0; }
     /* ===== Pedido confirmado ===== */
-    .dlg-narrow { max-width: 28rem; }
-    .conf { text-align: left; }
-    .conf .ok-badge { width: 3.75rem; height: 3.75rem; font-size: 1.9rem; margin: .25rem auto 1rem; }
-    .conf-title { text-align: center; font-size: 1.25rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin: 0 0 .4rem; }
-    .conf-sub { text-align: center; color: #c4c8d0; font-size: .92rem; line-height: 1.4; margin: 0 0 1.25rem; }
-    .conf-code { display: flex; flex-direction: column; align-items: center; gap: .25rem; padding: .9rem 1rem; background: #0D0D0D; border: 1px solid var(--blood); border-radius: .75rem; margin-bottom: .9rem; }
-    .conf-lbl { font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; color: #c4c8d0; }
-    .conf-code-val { font-size: 1.5rem; font-weight: 700; letter-spacing: .08em; color: var(--bone); word-break: break-all; text-align: center; }
-    .conf-list { margin: 0 0 .9rem; background: #0D0D0D; border: 1px solid #3d3d3d; border-radius: .75rem; }
-    .conf-list > div { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .7rem 1rem; }
-    .conf-list > div + div { border-top: 1px solid #333; }
-    .conf-list dt { color: #c4c8d0; font-size: .85rem; flex-shrink: 0; }
-    .conf-list dd { margin: 0; text-align: right; color: var(--bone); font-weight: 700; font-size: .92rem; overflow-wrap: anywhere; }
-    .conf-total dd { font-size: 1.15rem; }
-    .conf-note { border-left: 3px solid var(--blood); background: #232323; border-radius: .4rem; padding: .7rem .9rem; margin-bottom: 1.1rem; }
-    .conf-note p { margin: 0; color: #e5e7eb; font-size: .88rem; line-height: 1.45; overflow-wrap: anywhere; }
-    .conf-note p + p { margin-top: .4rem; color: #c4c8d0; }
     /* ===== Detalle de producto (ventana flotante con fondo atenuado) ===== */
     .detail-btn { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; border: 0; padding: 0; background: transparent; border-radius: .5rem; cursor: zoom-in; }
     .detail-chip { position: absolute; left: .6rem; bottom: .6rem; padding: .3rem .75rem; border-radius: 9999px; background: rgba(26,26,26,.92); border: 1px solid #4a4a4a; color: var(--bone); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; opacity: 0; transform: translateY(4px); transition: opacity .2s, transform .2s; }
@@ -433,6 +417,422 @@
     /* ===== Carrito, pago y confirmación: mismo fondo difuminado y misma animación de entrada que el detalle de producto ===== */
     #cart-overlay, #checkout-overlay { background: rgba(0,0,0,.82); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
     #cart-panel, #checkout-dialog, #checkout-confirm-step:not(.hidden) { animation: pd-in .22s ease-out; }
+
+    /* ===== Fondo de las ventanas: la página se sigue viendo detrás, casi sin difuminar ===== */
+    #cart-overlay, #checkout-overlay, .pd-overlay { background: rgba(0,0,0,.42); -webkit-backdrop-filter: blur(1.5px); backdrop-filter: blur(1.5px); }
+    /* En celular las ventanas dejan ver una franja de la página para que se note que no cambiaste de sitio */
+    @media (max-width: 767px) {
+        #product-overlay, #policy-overlay { align-items: flex-end; }
+        .pd, .pol { height: calc(var(--app-h) - 3rem); border-radius: 1rem 1rem 0 0; }
+    }
+    @media (max-width: 639px) {
+        #cart-panel { max-width: calc(100% - 2.5rem); border-left: 1px solid #3d3d3d; }
+    }
+
+    /* ===== Confirmar antes de quitar un producto del carrito ===== */
+    .cart-confirm { position: absolute; inset: 0; z-index: 6; display: flex; align-items: center; justify-content: center; padding: 1.25rem; background: rgba(0,0,0,.6); }
+    .cart-confirm.hidden { display: none; }
+    .cc-box { width: 100%; max-width: 22rem; background: #1A1A1A; border: 1px solid #3d3d3d; border-top: 3px solid var(--blood); border-radius: .9rem; padding: 1.4rem 1.25rem 1.2rem; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.8); animation: pd-in .2s ease-out; }
+    .cc-ico { width: 3.2rem; height: 3.2rem; margin: 0 auto .8rem; border-radius: 9999px; background: var(--blood); color: var(--bone); display: flex; align-items: center; justify-content: center; }
+    .cc-title { margin: 0 0 .4rem; font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .cc-text { margin: 0; color: #e5e7eb; font-size: .95rem; line-height: 1.45; overflow-wrap: anywhere; }
+    .cc-btns { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: 1.1rem; }
+    .cc-btn { min-height: 48px; border-radius: .5rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: .8rem; cursor: pointer; transition: background .2s, border-color .2s; }
+    .cc-no { background: transparent; color: var(--bone); border: 1px solid #6b7280; }
+    .cc-no:hover { border-color: var(--blood); background: rgba(132,34,74,.18); }
+    .cc-yes { background: var(--blood); color: var(--bone); border: 1px solid var(--blood); }
+    .cc-yes:hover { background: #A02C5E; }
+
+    /* ===== Logo: lleva al inicio ===== */
+    .logo-btn { display: block; line-height: 0; background: none; border: 0; padding: 4px; margin: -4px; border-radius: .4rem; cursor: pointer; transition: opacity .2s, transform .2s; }
+    .logo-btn:hover { opacity: .85; transform: scale(1.02); }
+
+    /* ===== Barra de políticas: compacta, un solo icono y un solo texto ===== */
+    .policy-bar { min-height: 40px; padding: .4rem .85rem; gap: .25rem .75rem; border-radius: .6rem; box-shadow: 0 3px 8px rgba(0,0,0,.5); flex-wrap: nowrap; }
+    .pb-items { font-size: .85rem; color: var(--bone); min-width: 0; line-height: 1.35; }
+    .pb-item { align-items: flex-start; gap: .5rem; }
+    .pb-item svg { margin-top: .15rem; }
+    .pb-cta { font-size: .68rem; white-space: nowrap; flex-shrink: 0; }
+
+    /* ===== Adaptación a cualquier pantalla ===== */
+    body { overflow-x: clip; }
+    img { max-width: 100%; }
+    @media (max-width: 380px) {
+        .logo-btn img { height: 2.5rem; }
+        .nav-link { font-size: .75rem; letter-spacing: .12em; }
+        .cat-tab { padding-left: .9rem; padding-right: .9rem; font-size: .75rem; }
+        .co-input { font-size: 16px; }
+    }
+    @media (min-width: 1536px) {
+        #app-header > div, main#contenido { max-width: 80rem; }
+    }
+    .policy-bar { width: fit-content; max-width: 100%; margin-left: auto; margin-right: auto; justify-content: center; gap: .5rem; min-height: 38px; padding: .3rem .95rem; border-radius: 9999px; box-shadow: none; background: rgba(26,26,26,.9); border-color: #333; }
+    .pb-items { font-size: .82rem; }
+    .pb-cta svg { margin: 0; }
+
+    /* ===== Confirmación del pedido: aviso y botones con la paleta de la tienda ===== */
+
+    /* ===== Confirmación con aire (mismo ritmo de espacios que el pago) ===== */
+
+    /* Autocompletado del navegador con los colores de la tienda (sin el fondo azul) */
+    input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 1000px #0D0D0D inset; -webkit-text-fill-color: #F5F5F0; caret-color: #F5F5F0; transition: background-color 9999s ease-out 0s; }
+    /* ===== Confirmación compacta: todo visible sin desplazarse ===== */
+
+    /* ===== Políticas compactas: sin desplazarse ===== */
+    .pol { max-width: 40rem; }
+    .pol .pd-head { padding: 1rem 1.25rem .8rem; }
+    #policy-body { padding: .9rem 1.1rem; display: grid; grid-template-columns: 1fr; gap: .6rem; }
+    @media (min-width: 640px) { #policy-body { grid-template-columns: 1fr 1fr; align-items: stretch; } }
+    .pol-item { padding: .75rem .85rem; gap: .65rem; }
+    .pol-item .pd-desc { font-size: .88rem; line-height: 1.45; }
+    .pol-ico { flex-basis: 2rem; width: 2rem; height: 2rem; }
+    .pol .pd-actions { padding: .75rem 1.1rem .9rem; }
+    @media (max-width: 767px) { .pol { height: auto; max-height: calc(var(--app-h) - 3rem); } }
+
+    /* ===== Pulido según las pautas de Apple (HIG): objetivos táctiles de 44 px, respuesta al toque, legibilidad ===== */
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+    #app-header { padding-top: env(safe-area-inset-top, 0px); }
+    button, label, select, input[type="radio"], .city-opt { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+    .qty-btn, .stepper .qty-btn { width: 2.75rem; height: 2.75rem; }
+    .cart-remove { width: 2.75rem; height: 2.75rem; }
+    .size-btn, .sub-pill, .copy-btn, .copy-btn-sm { min-height: 44px; }
+    .size-btn:active, .sub-pill:active, .cat-tab:active, .qty-btn:active, .copy-btn:active, .pd-add:active, .conf-dl:active, .conf-close:active, .cc-btn:active, .policy-bar:active, #cart-open:active, #cart-checkout-btn:active, #checkout-submit:active, .pd-close:active, .nav-link:active { transform: scale(.96); }
+    .cart-card, .cart-items, #checkout-dialog, .pd-body, #cart-items { overscroll-behavior: contain; }
+
+
+    /* ===== Redistribución de Políticas y Pedido confirmado: mismo orden y aire que Finalizar compra (los colores no cambian) ===== */
+    /* Políticas */
+    .pol { max-width: 44rem; }
+    .pol .pd-head { padding: 1.5rem 2rem 1.1rem; gap: .35rem; }
+    .pol .pd-head .pd-title { font-size: 1.25rem; text-transform: uppercase; letter-spacing: .05em; padding-right: 3.5rem; }
+    .pol .pd-close { top: 1rem; right: 1.25rem; }
+    #policy-body { padding: 1.5rem 2rem; gap: 1rem; }
+    .pol-item { flex-direction: column; align-items: stretch; gap: .85rem; padding: 1.1rem 1.2rem 1.25rem; }
+    .pol-head { display: flex; align-items: center; gap: .75rem; padding-bottom: .8rem; border-bottom: 1px solid #333; }
+    .pol-head .pd-h { margin: 0; font-size: .78rem; letter-spacing: .12em; }
+    .pol-ico { flex: 0 0 2.25rem; width: 2.25rem; height: 2.25rem; }
+    .pol-item .pd-desc { font-size: .95rem; line-height: 1.6; }
+    .pol .pd-actions { padding: 1rem 2rem 1.35rem; }
+    @media (max-width: 767px) {
+        .pol .pd-head { padding: 1.1rem 1.1rem .9rem; }
+        .pol .pd-head .pd-title { font-size: 1.1rem; padding-right: 3rem; }
+        .pol .pd-close { top: .7rem; right: .8rem; }
+        #policy-body { padding: 1rem 1.1rem; gap: .7rem; }
+        .pol-item { padding: .85rem 1rem 1rem; gap: .65rem; }
+        .pol-head { padding-bottom: .65rem; }
+        .pol-item .pd-desc { font-size: .92rem; line-height: 1.5; }
+        .pol .pd-actions { padding: .85rem 1.1rem calc(1rem + env(safe-area-inset-bottom, 0px)); }
+    }
+
+
+    /* ===== Pedido confirmado: una sola columna, jerarquía clara (pautas de Apple): resultado, datos, una acción principal y una secundaria ===== */
+    .co-dialog.dlg-narrow { max-width: 26rem; padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+    #checkout-confirm-step:not(.hidden) { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+    .conf-head { flex: 0 0 auto; text-align: center; padding: 1.75rem 1.5rem 1rem; }
+    .conf .ok-badge { width: 3.25rem; height: 3.25rem; margin: 0 auto .85rem; font-size: 1.6rem; box-shadow: 0 0 0 6px rgba(132,34,74,.25); }
+    .conf-title { margin: 0 0 .35rem; font-size: 1.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+    .conf-sub { margin: 0; color: #c4c8d0; font-size: .9rem; line-height: 1.45; }
+    .conf-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: .25rem 1.5rem 1rem; display: flex; flex-direction: column; gap: .85rem; }
+    .conf-body:focus-visible { outline-offset: -3px; }
+    .conf-list { margin: 0; background: #0D0D0D; border: 1px solid #3d3d3d; border-radius: .75rem; }
+    .conf-list > div { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .75rem 1rem; min-height: 44px; }
+    .conf-list > div + div { border-top: 1px solid #333; }
+    .conf-list dt { flex-shrink: 0; color: #c4c8d0; font-size: .85rem; }
+    .conf-list dd { margin: 0; text-align: right; color: var(--bone); font-size: .95rem; font-weight: 700; overflow-wrap: anywhere; font-variant-numeric: lining-nums tabular-nums; }
+    .conf-list .conf-code-val { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace; font-size: 1rem; letter-spacing: .06em; }
+    .conf-total dd { font-size: 1.2rem; }
+    .conf-note { border-left: 3px solid var(--blood); background: #232323; border-radius: .4rem; padding: .7rem .9rem; }
+    .conf-note p { margin: 0; color: #e5e7eb; font-size: .88rem; line-height: 1.45; overflow-wrap: anywhere; }
+    .conf-note p + p { margin-top: .35rem; color: #c4c8d0; }
+    .conf-send { display: flex; align-items: flex-start; gap: .65rem; padding: 0 .25rem; }
+    .conf-send-ico { flex: 0 0 1.25rem; width: 1.25rem; height: 1.25rem; margin-top: .1rem; color: var(--bone); display: flex; }
+    .conf-send-ico svg { width: 100%; height: 100%; }
+    .conf-send p { margin: 0; color: #c4c8d0; font-size: .85rem; line-height: 1.45; overflow-wrap: anywhere; }
+    .conf-send p strong { color: var(--bone); }
+    .conf-foot { flex: 0 0 auto; display: grid; gap: .6rem; padding: .9rem 1.5rem calc(1.1rem + env(safe-area-inset-bottom, 0px)); border-top: 1px solid #333; background: #1A1A1A; }
+    .conf-dl { width: 100%; min-height: 52px; display: flex; align-items: center; justify-content: center; gap: .6rem; padding: .5rem 1rem; border: 1px solid var(--blood); border-radius: .5rem; background: var(--blood); color: var(--bone); cursor: pointer; transition: background .2s, border-color .2s; }
+    .conf-dl svg { flex-shrink: 0; }
+    .conf-dl:hover { background: #A02C5E; border-color: #A02C5E; }
+    .conf-dl-txt span { font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: .88rem; }
+    .conf-close { width: 100%; min-height: 48px; border: 1px solid #6b7280; border-radius: .5rem; background: transparent; color: var(--bone); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .85rem; cursor: pointer; transition: border-color .2s, background .2s; }
+    .conf-close:hover { border-color: var(--blood); background: rgba(132,34,74,.18); }
+    @media (max-width: 640px) { .conf-head { padding: 1.4rem 1rem .8rem; } .conf-body { padding: .25rem 1rem .85rem; } .conf-foot { padding: .8rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px)); } }
+    @media (max-height: 600px) and (min-width: 421px) { .conf-foot { grid-template-columns: 1fr 1fr; padding-top: .7rem; padding-bottom: .8rem; } .conf-dl, .conf-close { min-height: 46px; } .conf-dl-txt span { font-size: .78rem; letter-spacing: .04em; white-space: nowrap; } .co-dialog.dlg-narrow { max-width: 30rem; } }
+    @media (max-height: 520px) { .conf-sub { display: none; } .conf-title { margin-bottom: 0; } .conf-head { padding-top: .8rem; padding-bottom: .5rem; } .conf .ok-badge { width: 2.25rem; height: 2.25rem; font-size: 1.1rem; margin-bottom: .35rem; } }
+    @media (max-height: 600px) { .conf-head { padding-top: 1rem; padding-bottom: .6rem; } .conf .ok-badge { width: 2.5rem; height: 2.5rem; font-size: 1.25rem; margin-bottom: .5rem; } .conf-sub { font-size: .85rem; } }
+
+    /* =====================================================================
+       CAPA DE CONSISTENCIA (pautas de diseño de Apple / HIG)
+       Va al final a propósito: unifica tipografía, radios, botones y
+       materiales sin tocar la lógica. Para ajustar la marca basta con
+       cambiar las variables de este bloque.
+       ===================================================================== */
+    :root {
+        /* Tipografía: serif de marca para títulos y producto; sistema para controles (mejor legibilidad a tamaños chicos) */
+        --font-brand: Georgia, 'Times New Roman', serif;
+        --font-ui: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        /* Radios concéntricos: control < tarjeta < ventana. Las píldoras quedan para chips y pestañas */
+        --r-ctl: .75rem;
+        --r-card: 1rem;
+        --r-sheet: 1.25rem;
+        /* Superficies y bordes */
+        --surface: #1A1A1A;
+        --surface-2: #232323;
+        --hairline: rgba(255,255,255,.12);
+        --text-2: #c4c8d0;
+        --blood-hi: #A02C5E;
+    }
+
+    /* ---- Tipografía de la interfaz ---- */
+    button, input, select, textarea, label, legend, dt,
+    .nav-link, .cat-tab, .sub-pill, .size-btn, .copy-btn, .size-chip, .detail-chip,
+    .pb-cta, .pd-tag, .pd-pricelbl, .pd-kicker, .pd-h, .sec-title, .field-error,
+    .cart-foot .note, .cart-foot .total-row .lbl, .city-opt, #toast {
+        font-family: var(--font-ui);
+    }
+    html body button, html body input, html body select, html body textarea { font-family: var(--font-ui); }
+
+    /* ---- Todo en minúscula/mayúscula normal: sin MAYÚSCULAS ni espaciado forzado (más legible y más cercano a Apple) ---- */
+    html body .nav-link, html body .cat-tab, html body .sub-pill, html body .copy-btn,
+    html body .detail-chip, html body .pb-cta, html body .pd-tag, html body .pd-pricelbl,
+    html body .pd-kicker, html body .pd-h, html body .sec-title, html body .pd-add,
+    html body .cc-btn, html body .cc-title, html body .conf-title, html body .conf-close,
+    html body .conf-dl-txt span, html body .cart-foot .total-row .lbl,
+    html body .pol .pd-head .pd-title, html body .pol-head .pd-h,
+    html body #cart-checkout-btn, html body #checkout-submit,
+    html body #cart-title, html body #checkout-title, html body .sub-title {
+        text-transform: none; letter-spacing: 0;
+    }
+
+    /* ---- Escala tipográfica (mínimo 12 px en cualquier texto) ---- */
+    html body .pd-kicker, html body .pd-pricelbl, html body .detail-chip, html body .pb-cta,
+    html body .pd-tag, html body .cart-foot .note, html body .size-chip, html body .copy-btn,
+    html body .field-error { font-size: .8125rem; }
+    html body .sec-title, html body .pd-h, html body .pol-head .pd-h, html body .cart-foot .total-row .lbl {
+        font-size: .875rem; font-weight: 600; color: var(--text-2);
+    }
+    html body .sub-pill, html body .cat-tab, html body .nav-link { font-size: .9375rem; }
+    html body .size-btn { font-size: .9375rem; font-weight: 500; }
+    html body .size-btn[aria-pressed="true"], html body .sub-pill[aria-pressed="true"] { font-weight: 600; }
+    html body label.block { font-size: .875rem; font-weight: 500; color: #d1d5db; margin-bottom: .4rem; }
+    html body .co-dialog .text-xs, html body #product-dialog .text-xs { font-size: .8125rem; }
+    html body .co-input { font-size: 1rem; }
+
+    /* ---- Jerarquía de títulos ---- */
+    html body #cart-title, html body #checkout-title { font-size: 1.375rem; font-weight: 700; }
+    html body .sub-title { font-size: 1.375rem; font-weight: 700; border-bottom: 0; padding-bottom: 0; margin-bottom: 1rem; }
+    html body #panel-inicio > h2 { font-size: 1.375rem; font-weight: 700; color: var(--bone); margin-bottom: 1.25rem; }
+    html body .pol .pd-head .pd-title, html body .conf-title, html body .cc-title { font-size: 1.375rem; font-weight: 700; }
+    html body .cc-title { font-size: 1.25rem; }
+    html body .cat-intro p { font-size: 1.0625rem; color: var(--text-2); }
+    html body .pd-head .pd-title { font-size: 1.5rem; }
+    html body .pd-desc, html body .cc-text, html body .conf-note p { color: #e5e7eb; }
+
+    /* ---- Barra superior con material translúcido (como la barra de navegación de Apple) ---- */
+    html body #app-header {
+        background: rgba(26,26,26,.72);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        backdrop-filter: saturate(180%) blur(20px);
+        border-bottom: 1px solid var(--hairline);
+    }
+    html body .nav-link { border-bottom-width: 2px; padding-left: .25rem; padding-right: .25rem; color: var(--text-2); }
+    html body .nav-link:hover { color: #fff; }
+    html body .nav-link[aria-current="page"] { color: var(--bone); font-weight: 600; border-bottom: 2px solid var(--bone); }
+    html body #cart-open { font-family: var(--font-ui); }
+    html body #cart-open span.text-sm { text-transform: none; letter-spacing: 0; font-size: .9375rem; font-weight: 500; }
+    html body #cart-count { font-family: var(--font-ui); font-variant-numeric: tabular-nums; }
+
+    /* ---- Pie de página ---- */
+    html body #app-footer { font-family: var(--font-ui); font-size: .875rem; border-bottom: 1px solid var(--hairline); border-top: 1px solid var(--hairline); }
+
+    /* ---- Botones: una sola familia de primarios y una de secundarios ---- */
+    html body #cart-checkout-btn, html body #checkout-submit, html body .pd-add, html body .conf-dl, html body .cc-yes {
+        min-height: 50px; border-radius: var(--r-ctl); font-family: var(--font-ui);
+        font-size: 1.0625rem; font-weight: 600; letter-spacing: 0; text-transform: none;
+        background: var(--blood); color: var(--bone); border: 1px solid var(--blood);
+    }
+    html body #cart-checkout-btn:hover:not(:disabled), html body #checkout-submit:hover:not(:disabled),
+    html body .pd-add:hover, html body .conf-dl:hover, html body .cc-yes:hover { background: var(--blood-hi); border-color: var(--blood-hi); }
+    html body #cart-checkout-btn:disabled, html body #checkout-submit:disabled { opacity: .45; }
+    html body .conf-dl-txt span { font-size: 1.0625rem; font-weight: 600; }
+    html body .conf-close, html body .cc-no {
+        min-height: 50px; border-radius: var(--r-ctl); font-family: var(--font-ui);
+        font-size: 1.0625rem; font-weight: 600; letter-spacing: 0; text-transform: none;
+        background: transparent; color: var(--bone); border: 1px solid #6b7280;
+    }
+    html body .cc-btn { font-size: 1.0625rem; }
+    html body .pd-add:active, html body .conf-dl:active, html body .conf-close:active, html body .cc-btn:active,
+    html body #cart-checkout-btn:active, html body #checkout-submit:active { transform: scale(.98); }
+    html body .size-btn:active, html body .sub-pill:active, html body .cat-tab:active, html body .qty-btn:active,
+    html body .copy-btn:active, html body .policy-bar:active, html body #cart-open:active, html body .pd-close:active,
+    html body .nav-link:active { transform: scale(.97); }
+
+    /* ---- Radios consistentes ---- */
+    html body .co-input, html body .city-btn, html body .pay-option, html body .city-opt { border-radius: var(--r-ctl); }
+    html body .city-list { border-radius: var(--r-card); border-color: #4a4a4a; }
+    html body .product-card, html body .cart-card, html body .pd-card, html body .conf-list,
+    html body .co-dialog .rounded-lg.border, html body .co-dialog section[aria-labelledby="sec-pedido"],
+    html body .co-dialog dl.rounded-lg, html body .pd-details { border-radius: var(--r-card); }
+    html body .product-card figure, html body .product-card .prod-img, html body .detail-btn { border-radius: calc(var(--r-card) - .5rem); }
+    html body .cart-thumb { border-radius: calc(var(--r-card) - .25rem); }
+    html body .pd, html body .pol, html body .co-dialog, html body .cc-box { border-radius: var(--r-sheet); }
+    html body .conf-note { border-radius: var(--r-ctl); }
+    @media (max-width: 767px) {
+        html body .pd, html body .pol { border-radius: var(--r-sheet) var(--r-sheet) 0 0; }
+    }
+
+    /* ---- Tarjetas de producto ---- */
+    html body .product-card { border-color: rgba(255,255,255,.08); box-shadow: 0 1px 2px rgba(0,0,0,.5); }
+    html body .product-card .prod-name { font-size: 1.0625rem; font-weight: 600; line-height: 1.3; }
+    html body .product-card .prod-price { font-family: var(--font-ui); font-size: .9375rem; color: var(--text-2); font-variant-numeric: tabular-nums; }
+    html body .prod-img + .detail-btn { cursor: pointer; }
+    html body .size-hint { font-family: var(--font-ui); font-size: .8125rem; color: #fca5a5; }
+    html body .add-btn { font-family: var(--font-ui); font-weight: 500; }
+
+    /* ---- Números alineados (precios, totales, cantidades) ---- */
+    html body .cart-foot .total-row .amt, html body .line-sub, html body .stepper .qty-num, html body #checkout-price,
+    html body .pd-price, html body #transfer-amount, html body .cart-unit, html body .conf-list dd {
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* ---- Pestañas y chips ---- */
+    html body .cat-tab { border-color: #4b5563; color: var(--text-2); }
+    html body .cat-tab[aria-selected="true"] { color: var(--bone); font-weight: 600; border-color: var(--blood); }
+    html body .sub-pill { color: var(--text-2); border-color: #4b5563; }
+    html body .policy-bar { font-family: var(--font-ui); }
+    html body .pb-items { font-size: .875rem; }
+
+    /* ---- Ventanas: un único borde superior de marca y sombra más suave ---- */
+    html body .pd, html body .pol, html body .co-dialog { box-shadow: 0 24px 64px rgba(0,0,0,.6); }
+    html body .pd-actions, html body .cart-foot, html body .conf-foot { border-top: 1px solid var(--hairline); box-shadow: none; }
+    html body .cart-head { border-bottom: 1px solid var(--hairline); }
+
+    /* ---- Botones de cerrar: mismo tamaño y misma posición lógica en todas las ventanas ---- */
+    html body #cart-close, html body #checkout-close, html body .pd-close {
+        width: 2.75rem; height: 2.75rem; font-size: 1.5rem; font-weight: 300; border-color: #4b5563; font-family: var(--font-ui);
+    }
+
+    /* ---- Estado vacío del carrito: invita a actuar ---- */
+    html body .cart-empty p:first-of-type { font-size: 1.125rem; font-weight: 600; }
+    html body .cart-empty { font-family: var(--font-ui); }
+
+    /* ---- Formularios ---- */
+    html body .co-input::placeholder { color: #9ca3af; }
+    html body .field-error { font-size: .8125rem; }
+    html body .co-dialog .pay-option { font-family: var(--font-ui); font-size: 1rem; }
+    html body .pay-option .text-xs { font-size: .8125rem; }
+    html body .co-dialog .sec-title .step { font-size: .8125rem; font-weight: 600; }
+
+    /* ---- Aviso emergente ---- */
+    html body #toast .toast-title { font-size: .9375rem; font-weight: 600; }
+    html body #toast .toast-text { font-size: .8125rem; }
+
+    /* ---- Foco único y visible en todo el sitio ---- */
+    html body :where(a, button, input, select, summary, [tabindex]):focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+
+    /* ---- Menos movimiento si la persona lo pide (se mantiene el bloque global y se quitan escalas al tocar) ---- */
+    @media (prefers-reduced-motion: reduce) {
+        html body .pd-add:active, html body .conf-dl:active, html body .cc-btn:active, html body .nav-link:active { transform: none; }
+    }
+
+    /* =====================================================================
+       DETALLE DE PRODUCTO — ajuste HIG (celular y PC)
+       ===================================================================== */
+    /* Precio: texto limpio, sin cápsula; los datos van en la misma fuente de interfaz */
+    html body .pd-pricebox { background: transparent; border: 0; box-shadow: none; padding: 0; border-radius: 0; }
+    html body .pd-pricebox .pd-price { font-family: var(--font-ui); font-size: 1.5rem; font-weight: 700; letter-spacing: -.01em; }
+    html body .pd-priceline { gap: .75rem; }
+    html body .pd-tag { font-size: .8125rem; min-height: 1.875rem; color: var(--text-2); border-color: #4b5563; }
+    html body .pd-details dt { font-size: .9375rem; color: var(--text-2); font-family: var(--font-ui); }
+    html body .pd-details dd { font-size: .9375rem; font-weight: 500; font-family: var(--font-ui); color: var(--bone); }
+    html body .pd-details > div { padding: .7rem 0; }
+    html body .pd-desc { font-family: var(--font-ui); font-size: 1rem; line-height: 1.5; }
+    html body .pd-card .pd-h { margin-bottom: .65rem; }
+    html body .pd-card .size-btn { min-width: 48px; min-height: 44px; font-family: var(--font-ui); }
+    html body .pd-hint { font-family: var(--font-ui); font-size: .875rem; }
+    html body .pd-actions { background: rgba(26,26,26,.88); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
+
+    /* Celular: toda la hoja se desplaza (foto, título y datos); solo el botón queda fijo abajo */
+    @media (max-width: 767px) {
+        html body #product-dialog { display: block; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; grid-template-rows: none; }
+        html body #product-dialog .pd-info { display: contents; }
+        html body #product-dialog .pd-media { height: min(100vw, calc(var(--app-h) * .44)); border-bottom: 0; }
+        html body #product-dialog .pd-media img { height: 100%; object-position: center 20%; }
+        html body #product-dialog .pd-head { border-bottom: 0; padding: 1.1rem 1.1rem .4rem; gap: .5rem; }
+        html body #product-dialog .pd-head .pd-title { font-size: 1.5rem; line-height: 1.2; padding-right: 0; }
+        html body #product-dialog .pd-pricebox .pd-price { font-size: 1.375rem; }
+        html body #product-dialog .pd-body { overflow: visible; flex: none; padding: .75rem 1.1rem 1.25rem; }
+        html body #product-dialog .pd-actions { position: sticky; bottom: 0; z-index: 4; padding: .8rem 1.1rem calc(.8rem + env(safe-area-inset-bottom, 0px)); }
+        /* El botón de cerrar acompaña al desplazamiento, siempre al alcance del pulgar */
+        html body #product-dialog > .pd-close { position: sticky; top: .75rem; z-index: 6; margin: .75rem .75rem -3.5rem auto; background: rgba(26,26,26,.72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+    }
+
+    /* =====================================================================
+       CARRITO, PAGO, COMPROBANTE Y POLÍTICAS — misma lógica que el detalle:
+       títulos en serif de marca, todo lo demás en la fuente de interfaz,
+       mismos radios, mismos bordes y botón principal siempre visible.
+       ===================================================================== */
+    html body #cart-panel, html body .co-dialog, html body .pol, html body .cc-box,
+    html body .pay-detail, html body #checkout-summary { font-family: var(--font-ui); }
+    html body #cart-title, html body #checkout-title, html body #confirm-title, html body .conf-title,
+    html body .cc-title, html body .pol .pd-head .pd-title { font-family: var(--font-brand); }
+    html body .cart-name { font-family: var(--font-brand); font-size: 1rem; font-weight: 700; }
+
+    /* Texto de apoyo: mismos tamaños en todas las ventanas */
+    html body .co-dialog .text-sm, html body .pay-detail p { font-size: .9375rem; line-height: 1.5; }
+    html body .co-dialog .text-xs { font-size: .8125rem; }
+    html body .cart-unit, html body .conf-sub, html body .conf-send p, html body .conf-note p { font-size: .9375rem; }
+    html body .conf-list dt, html body .conf-list dd { font-family: var(--font-ui); font-size: .9375rem; }
+    html body .conf-list dd { font-weight: 600; }
+    html body .conf-list .conf-code-val { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1rem; }
+    html body .conf-total dt { font-weight: 600; color: var(--bone); }
+    html body .conf-total dd { font-size: 1.25rem; font-weight: 700; }
+    html body #checkout-price, html body #cart-total { font-family: var(--font-ui); font-weight: 700; }
+    html body .cart-foot .total-row .amt { font-size: 1.5rem; }
+    html body #checkout-summary { font-size: .9375rem; }
+
+    /* Bordes: un solo tono de línea en tarjetas y separadores de todas las ventanas */
+    html body .co-dialog .rounded-lg.border, html body .co-dialog dl.rounded-lg, html body .co-dialog .border-\[\#262626\],
+    html body .conf-list, html body .cart-card, html body .pd-card, html body .pol-item { border-color: #3d3d3d; }
+    html body .co-dialog .sec-title { padding-bottom: .6rem; margin-bottom: 1rem; }
+    html body .co-dialog section[aria-labelledby="sec-pedido"] { padding: 1.25rem; }
+    html body .copy-btn { font-size: .875rem; }
+
+    /* Botón principal del pago: fijo abajo, sobre un fondo que lo separa del formulario */
+    html body .co-submit-bar {
+        position: sticky; bottom: 0; z-index: 3;
+        margin-top: .5rem; padding: 1.1rem 0 calc(.1rem + env(safe-area-inset-bottom, 0px));
+        background: linear-gradient(to top, #1A1A1A 72%, rgba(26,26,26,0));
+    }
+    html body #checkout-submit { width: 100%; }
+
+    /* Cerrar del pago: mismo lugar y tamaño que en el detalle y las políticas */
+    html body #checkout-close { top: .6rem; right: .7rem; border: 1px solid #4b5563; border-radius: 9999px; }
+    html body .co-dialog #checkout-title { padding-right: 3.25rem; }
+
+    /* Celular: pago y comprobante también salen como hoja desde abajo, igual que detalle y políticas */
+    @media (max-width: 639px) {
+        html body #checkout-overlay { align-items: flex-end; padding: 0; }
+        html body #checkout-dialog { max-width: none; width: 100%; max-height: calc(var(--app-h) - 3rem); border-radius: var(--r-sheet) var(--r-sheet) 0 0; border-left: 0; border-right: 0; border-bottom: 0; }
+        html body #checkout-dialog.dlg-narrow { max-height: calc(var(--app-h) - 3rem); }
+        html body .co-dialog { padding: 1.1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px)); }
+        html body .co-dialog.dlg-narrow { padding: 0; }
+    }
+
+    /* Comprobante: botón principal arriba de la acción secundaria, mismo alto que el resto */
+    html body .conf-foot { gap: .6rem; }
+    html body .conf-head { padding-top: 1.75rem; }
+    html body .conf .ok-badge { font-family: var(--font-ui); }
+
+    /* Políticas: un solo título, sin etiqueta repetida encima */
+    html body .pol .pd-head .pd-kicker { display: none; }
+    html body .pol-item .pd-desc { font-size: 1rem; line-height: 1.5; }
+    html body .pol .pd-actions .pd-add { width: 100%; }
+
+    /* Confirmar quitar producto: mismo lenguaje que el resto */
+    html body .cc-text { font-family: var(--font-ui); font-size: 1rem; }
+    html body .cc-box { padding: 1.5rem 1.25rem 1.25rem; }
 </style>
 </head>
 <body class="bg-[#0D0D0D] text-[#F5F5F0] flex flex-col min-h-screen">
@@ -443,35 +843,35 @@
     <div id="live-region" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <!-- Aviso visual breve (el lector de pantalla usa la región de arriba) -->
-    <div id="toast" aria-hidden="true" class="hidden"><span class="toast-icon" id="toast-icon">✓</span><span id="toast-text"></span><span class="toast-bar"></span></div>
+    <div id="toast" aria-hidden="true" class="hidden ok"><span class="toast-icon" id="toast-icon">✓</span><span class="toast-msg"><span class="toast-title" id="toast-title"></span><span class="toast-text" id="toast-text"></span></span><span class="toast-bar"></span></div>
 
     <!-- HEADER fijo con navegación + carrito -->
     <header id="app-header" class="sticky top-0 z-40 bg-[#1A1A1A] backdrop-blur border-b border-[#262626]">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
             <div class="text-left">
-                <h1 class="m-0 leading-none"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2OTcuMjkgMjMzLjY5Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgfQoKICAgICAgLnN0MSB7CiAgICAgICAgZmlsbDogI2M0MTEzYjsKICAgICAgfQoKICAgICAgLnN0MiB7CiAgICAgICAgZmlsbDogI2Y1ZjVmMDsKICAgICAgfQoKICAgICAgLnN0MyB7CiAgICAgICAgY2xpcC1wYXRoOiB1cmwoI2NsaXBwYXRoKTsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxjbGlwUGF0aCBpZD0iY2xpcHBhdGgiPgogICAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIyNDEuMjEiIHdpZHRoPSIyMTQuODUiIGhlaWdodD0iODQuMDYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY5Ny4yOCA4NC4wNikgcm90YXRlKDE4MCkiLz4KICAgIDwvY2xpcFBhdGg+CiAgPC9kZWZzPgogIDxnPgogICAgPHBhdGggZD0iTTg2MC42OCwxOC43MiIvPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0zNS42NCwwaDU5LjM1bDEyNy44NywxNjUuNzVzNTQuODIsNzguMDMsMTM0LjU3LDU2LjkyYzAsMC02OC4wNCw0Mi42Mi0xNDguOTEtMzkuODNDMTI3LjY2LDEwMC4zOCw3OS40NiwyNy4wOSw3OS40NiwyNy4wOWMwLDAtMTkuMjktMjcuMDktNDMuODItMjcuMDlaIi8+CiAgICAgIDxnPgogICAgICAgIDxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik03Ny4wOSwxNjUuNzVjMC00OS4xLDAsNDkuMSwwLDQ5LjFoLTQ0LjM0czQ0LjM0LTQuNzUsNDQuMzQtNDkuMVoiLz4KICAgICAgICA8cGF0aCBjbGFzcz0ic3QyIiBkPSJNODAuNzgsMTY1Ljc1YzAtNDkuMSwwLDQ5LjEsMCw0OS4xaDQ0LjM0cy00NC4zNC00Ljc1LTQ0LjM0LTQ5LjFaIi8+CiAgICAgICAgPHJlY3QgY2xhc3M9InN0MiIgeD0iNzcuMDkiIHk9IjIwLjI3IiB3aWR0aD0iMy42OCIgaGVpZ2h0PSIxOTQuNTkiLz4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8cmVjdCBjbGFzcz0ic3QyIiB4PSIyMjguODkiIHk9IjAiIHdpZHRoPSIzLjY4IiBoZWlnaHQ9IjE5NC41OSIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0yMzIuNTcsNDkuMUMyMzIuNTcsOTguMjEsMjMyLjU3LDAsMjMyLjU3LDBoNDQuMzRzLTQ0LjM0LDQuNzUtNDQuMzQsNDkuMVoiLz4KICAgICAgICA8cGF0aCBjbGFzcz0ic3QyIiBkPSJNMjI4Ljg5LDQ5LjFjMCw0OS4xLDAtNDkuMSwwLTQ5LjFoLTQ0LjM0czQ0LjM0LDQuNzUsNDQuMzQsNDkuMVoiLz4KICAgICAgPC9nPgogICAgPC9nPgogICAgPHBhdGggY2xhc3M9InN0MiIgZD0iTTM0OC42NCwwQzI4OS4zMSwwLDI0MS4yMSw0OC4xLDI0MS4yMSwxMDcuNDNzNDguMSwxMDcuNDMsMTA3LjQzLDEwNy40MywxMDcuNDMtNDguMSwxMDcuNDMtMTA3LjQzUzQwNy45NywwLDM0OC42NCwwWk0zNDguNjQsMjEzLjAyYy00MS4wMywwLTc0LjI5LTQ3LjI3LTc0LjI5LTEwNS41OVMzMDcuNjEsMS44NCwzNDguNjQsMS44NHM3NC4yOSw0Ny4yNyw3NC4yOSwxMDUuNTktMzMuMjYsMTA1LjU5LTc0LjI5LDEwNS41OVoiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik02MDQuNzMsMjIyLjAxYy00MC4zMSwwLTcyLjk5LTQyLjgxLTcyLjk5LTk1LjYyczMyLjY4LTk1LjYyLDcyLjk5LTk1LjYyYzcuOTQsMCwxNS41OSwxLjY3LDIyLjc1LDQuNzQtMTYuNTMtMTAuNC0zNi4wOS0xNi40Mi01Ny4wNi0xNi40Mi01OS4yNiwwLTEwNy4zLDQ4LjA0LTEwNy4zLDEwNy4zLDAsNTkuMjYsNDguMDQsMTA3LjMsMTA3LjMsMTA3LjMsMjAuOTcsMCw0MC41My02LjAyLDU3LjA2LTE2LjQyLTcuMTYsMy4wNy0xNC44MSw0Ljc0LTIyLjc1LDQuNzRaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzg0LjQ4LDEwNy40M2MtMTEuNzktMS4zMi0zNS44NC0xMS4zOC0zNS44NC03MS40NiwwLDYwLjA4LTI0LjA1LDcwLjE0LTM1Ljg0LDcxLjQ2LDExLjc5LDEuMzIsMzUuODQsMTEuMzgsMzUuODQsNzEuNDYsMC02MC4wOCwyNC4wNS03MC4xNCwzNS44NC03MS40NloiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik02OTcuMTksMjUuNjFjLTQuNTctMzUuNTMtMTU2LjA1LTI5LjIzLTM0OC41NSwxMC4zNkMxNTYuMTQsNzUuNTYtNC40NywxMzMuNDUuMSwxNjguOThjNC41NywzNS41MywxNjQuMzIsMzIuMjQsMzU2LjgyLTcuMzUsMTkyLjUtMzkuNTksMzQ0Ljg0LTEwMC40OSwzNDAuMjctMTM2LjAyWk0zNTYuMjYsMTU2LjVDMTcxLjE4LDE5NC41NywxNy43MywxOTguOTIsMTMuNTMsMTY2LjIyYy00LjItMzIuNywxNTAuMDQtOTIuMTgsMzM1LjExLTEzMC4yNUM1MzMuNzItMi4xLDY3OS41NS00LjMzLDY4My43NiwyOC4zN2M0LjIsMzIuNy0xNDIuNDIsOTAuMDYtMzI3LjUsMTI4LjEzWiIvPgogICAgPHJlY3QgY2xhc3M9InN0MiIgeD0iNzcuMDkiIHk9IjEwOC45MiIgd2lkdGg9IjMuNjgiIGhlaWdodD0iNy45MiIvPgogICAgPHBhdGggY2xhc3M9InN0MiIgZD0iTTIwNi4yMiwxODAuNDhDMTI1LjM1LDk4LjAyLDc5LjQ2LDI3LjA5LDc5LjQ2LDI3LjA5YzAsMC0xOS4yOS0yNy4wOS00My44Mi0yNy4wOWg1OS4zNWwxMjcuODcsMTY1Ljc1Ii8+CiAgICA8cmVjdCBjbGFzcz0ic3QyIiB4PSIyMjguODkiIHk9IjU2Ljk1IiB3aWR0aD0iMy42OCIgaGVpZ2h0PSI3LjkyIi8+CiAgICA8ZyBjbGFzcz0ic3QzIj4KICAgICAgPHBhdGggY2xhc3M9InN0MiIgZD0iTTM0OC42NCwyMTQuODVjNTkuMzMsMCwxMDcuNDMtNDguMSwxMDcuNDMtMTA3LjQzUzQwNy45NywwLDM0OC42NCwwcy0xMDcuNDMsNDguMS0xMDcuNDMsMTA3LjQzLDQ4LjEsMTA3LjQzLDEwNy40MywxMDcuNDNaTTM0OC42NCwxLjg0YzQxLjAzLDAsNzQuMjksNDcuMjcsNzQuMjksMTA1LjU5cy0zMy4yNiwxMDUuNTktNzQuMjksMTA1LjU5LTc0LjI5LTQ3LjI3LTc0LjI5LTEwNS41OVMzMDcuNjEsMS44NCwzNDguNjQsMS44NFoiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPg==" alt="Noctis Wear" class="h-12 sm:h-14 w-auto block"></h1>
+                <h1 class="m-0 leading-none"><button type="button" id="logo-home" class="logo-btn" aria-label="Noctis Wear, ir al inicio"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2OTcuMjkgMjMzLjY5Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogbm9uZTsKICAgICAgfQoKICAgICAgLnN0MSB7CiAgICAgICAgZmlsbDogI2M0MTEzYjsKICAgICAgfQoKICAgICAgLnN0MiB7CiAgICAgICAgZmlsbDogI2Y1ZjVmMDsKICAgICAgfQoKICAgICAgLnN0MyB7CiAgICAgICAgY2xpcC1wYXRoOiB1cmwoI2NsaXBwYXRoKTsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxjbGlwUGF0aCBpZD0iY2xpcHBhdGgiPgogICAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIyNDEuMjEiIHdpZHRoPSIyMTQuODUiIGhlaWdodD0iODQuMDYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY5Ny4yOCA4NC4wNikgcm90YXRlKDE4MCkiLz4KICAgIDwvY2xpcFBhdGg+CiAgPC9kZWZzPgogIDxnPgogICAgPHBhdGggZD0iTTg2MC42OCwxOC43MiIvPgogICAgPGc+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0zNS42NCwwaDU5LjM1bDEyNy44NywxNjUuNzVzNTQuODIsNzguMDMsMTM0LjU3LDU2LjkyYzAsMC02OC4wNCw0Mi42Mi0xNDguOTEtMzkuODNDMTI3LjY2LDEwMC4zOCw3OS40NiwyNy4wOSw3OS40NiwyNy4wOWMwLDAtMTkuMjktMjcuMDktNDMuODItMjcuMDlaIi8+CiAgICAgIDxnPgogICAgICAgIDxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik03Ny4wOSwxNjUuNzVjMC00OS4xLDAsNDkuMSwwLDQ5LjFoLTQ0LjM0czQ0LjM0LTQuNzUsNDQuMzQtNDkuMVoiLz4KICAgICAgICA8cGF0aCBjbGFzcz0ic3QyIiBkPSJNODAuNzgsMTY1Ljc1YzAtNDkuMSwwLDQ5LjEsMCw0OS4xaDQ0LjM0cy00NC4zNC00Ljc1LTQ0LjM0LTQ5LjFaIi8+CiAgICAgICAgPHJlY3QgY2xhc3M9InN0MiIgeD0iNzcuMDkiIHk9IjIwLjI3IiB3aWR0aD0iMy42OCIgaGVpZ2h0PSIxOTQuNTkiLz4KICAgICAgPC9nPgogICAgICA8Zz4KICAgICAgICA8cmVjdCBjbGFzcz0ic3QyIiB4PSIyMjguODkiIHk9IjAiIHdpZHRoPSIzLjY4IiBoZWlnaHQ9IjE5NC41OSIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik0yMzIuNTcsNDkuMUMyMzIuNTcsOTguMjEsMjMyLjU3LDAsMjMyLjU3LDBoNDQuMzRzLTQ0LjM0LDQuNzUtNDQuMzQsNDkuMVoiLz4KICAgICAgICA8cGF0aCBjbGFzcz0ic3QyIiBkPSJNMjI4Ljg5LDQ5LjFjMCw0OS4xLDAtNDkuMSwwLTQ5LjFoLTQ0LjM0czQ0LjM0LDQuNzUsNDQuMzQsNDkuMVoiLz4KICAgICAgPC9nPgogICAgPC9nPgogICAgPHBhdGggY2xhc3M9InN0MiIgZD0iTTM0OC42NCwwQzI4OS4zMSwwLDI0MS4yMSw0OC4xLDI0MS4yMSwxMDcuNDNzNDguMSwxMDcuNDMsMTA3LjQzLDEwNy40MywxMDcuNDMtNDguMSwxMDcuNDMtMTA3LjQzUzQwNy45NywwLDM0OC42NCwwWk0zNDguNjQsMjEzLjAyYy00MS4wMywwLTc0LjI5LTQ3LjI3LTc0LjI5LTEwNS41OVMzMDcuNjEsMS44NCwzNDguNjQsMS44NHM3NC4yOSw0Ny4yNyw3NC4yOSwxMDUuNTktMzMuMjYsMTA1LjU5LTc0LjI5LDEwNS41OVoiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik02MDQuNzMsMjIyLjAxYy00MC4zMSwwLTcyLjk5LTQyLjgxLTcyLjk5LTk1LjYyczMyLjY4LTk1LjYyLDcyLjk5LTk1LjYyYzcuOTQsMCwxNS41OSwxLjY3LDIyLjc1LDQuNzQtMTYuNTMtMTAuNC0zNi4wOS0xNi40Mi01Ny4wNi0xNi40Mi01OS4yNiwwLTEwNy4zLDQ4LjA0LTEwNy4zLDEwNy4zLDAsNTkuMjYsNDguMDQsMTA3LjMsMTA3LjMsMTA3LjMsMjAuOTcsMCw0MC41My02LjAyLDU3LjA2LTE2LjQyLTcuMTYsMy4wNy0xNC44MSw0Ljc0LTIyLjc1LDQuNzRaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMzg0LjQ4LDEwNy40M2MtMTEuNzktMS4zMi0zNS44NC0xMS4zOC0zNS44NC03MS40NiwwLDYwLjA4LTI0LjA1LDcwLjE0LTM1Ljg0LDcxLjQ2LDExLjc5LDEuMzIsMzUuODQsMTEuMzgsMzUuODQsNzEuNDYsMC02MC4wOCwyNC4wNS03MC4xNCwzNS44NC03MS40NloiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik02OTcuMTksMjUuNjFjLTQuNTctMzUuNTMtMTU2LjA1LTI5LjIzLTM0OC41NSwxMC4zNkMxNTYuMTQsNzUuNTYtNC40NywxMzMuNDUuMSwxNjguOThjNC41NywzNS41MywxNjQuMzIsMzIuMjQsMzU2LjgyLTcuMzUsMTkyLjUtMzkuNTksMzQ0Ljg0LTEwMC40OSwzNDAuMjctMTM2LjAyWk0zNTYuMjYsMTU2LjVDMTcxLjE4LDE5NC41NywxNy43MywxOTguOTIsMTMuNTMsMTY2LjIyYy00LjItMzIuNywxNTAuMDQtOTIuMTgsMzM1LjExLTEzMC4yNUM1MzMuNzItMi4xLDY3OS41NS00LjMzLDY4My43NiwyOC4zN2M0LjIsMzIuNy0xNDIuNDIsOTAuMDYtMzI3LjUsMTI4LjEzWiIvPgogICAgPHJlY3QgY2xhc3M9InN0MiIgeD0iNzcuMDkiIHk9IjEwOC45MiIgd2lkdGg9IjMuNjgiIGhlaWdodD0iNy45MiIvPgogICAgPHBhdGggY2xhc3M9InN0MiIgZD0iTTIwNi4yMiwxODAuNDhDMTI1LjM1LDk4LjAyLDc5LjQ2LDI3LjA5LDc5LjQ2LDI3LjA5YzAsMC0xOS4yOS0yNy4wOS00My44Mi0yNy4wOWg1OS4zNWwxMjcuODcsMTY1Ljc1Ii8+CiAgICA8cmVjdCBjbGFzcz0ic3QyIiB4PSIyMjguODkiIHk9IjU2Ljk1IiB3aWR0aD0iMy42OCIgaGVpZ2h0PSI3LjkyIi8+CiAgICA8ZyBjbGFzcz0ic3QzIj4KICAgICAgPHBhdGggY2xhc3M9InN0MiIgZD0iTTM0OC42NCwyMTQuODVjNTkuMzMsMCwxMDcuNDMtNDguMSwxMDcuNDMtMTA3LjQzUzQwNy45NywwLDM0OC42NCwwcy0xMDcuNDMsNDguMS0xMDcuNDMsMTA3LjQzLDQ4LjEsMTA3LjQzLDEwNy40MywxMDcuNDNaTTM0OC42NCwxLjg0YzQxLjAzLDAsNzQuMjksNDcuMjcsNzQuMjksMTA1LjU5cy0zMy4yNiwxMDUuNTktNzQuMjksMTA1LjU5LTc0LjI5LTQ3LjI3LTc0LjI5LTEwNS41OVMzMDcuNjEsMS44NCwzNDguNjQsMS44NFoiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPg==" alt="" class="h-12 sm:h-14 w-auto block"></button></h1>
             </div>
 
             <nav aria-label="Navegación principal" class="hidden sm:flex gap-8">
                 <button type="button" data-tab="inicio" aria-current="page"
-                    class="nav-link text-sm uppercase tracking-widest text-[#F5F5F0] hover:text-white pb-1 transition-colors">Inicio</button>
+                    class="nav-link text-sm   text-[#F5F5F0] hover:text-white pb-1 transition-colors">Inicio</button>
                 <button type="button" data-tab="catalogo"
-                    class="nav-link text-sm uppercase tracking-widest text-[#F5F5F0] hover:text-white pb-1 transition-colors">Catálogo</button>
+                    class="nav-link text-sm   text-[#F5F5F0] hover:text-white pb-1 transition-colors">Catálogo</button>
             </nav>
 
             <button type="button" id="cart-open" aria-label="Abrir carrito de compras, vacío"
                 class="relative flex items-center gap-2 bg-[#1a1a1a] border border-[#6b7280] hover:border-[#84224A] rounded-full px-4 py-2 min-h-[44px] transition-colors">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 11h10.6l2-8H6.2"/><circle cx="9" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/></svg>
-                <span class="text-sm uppercase tracking-wider hidden sm:inline" aria-hidden="true">Carrito</span>
+                <span class="text-sm   hidden sm:inline" aria-hidden="true">Carrito</span>
                 <span id="cart-count" aria-hidden="true" class="absolute -top-2 -right-2 bg-[#84224A] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
             </button>
         </div>
 
         <nav aria-label="Navegación principal móvil" class="sm:hidden flex justify-center gap-8 pb-2">
             <button type="button" data-tab="inicio" aria-current="page"
-                class="nav-link text-sm uppercase tracking-widest text-[#F5F5F0] hover:text-white pb-1 transition-colors">Inicio</button>
+                class="nav-link text-sm   text-[#F5F5F0] hover:text-white pb-1 transition-colors">Inicio</button>
             <button type="button" data-tab="catalogo"
-                class="nav-link text-sm uppercase tracking-widest text-[#F5F5F0] hover:text-white pb-1 transition-colors">Catálogo</button>
+                class="nav-link text-sm   text-[#F5F5F0] hover:text-white pb-1 transition-colors">Catálogo</button>
         </nav>
     </header>
 
@@ -486,10 +886,10 @@
             <!-- Resumen de políticas: visible desde el primer momento y abre el detalle -->
             <button type="button" id="policy-bar" class="policy-bar mb-5" data-policy-open aria-haspopup="dialog">
                 <span id="policy-bar-items" class="pb-items"></span>
-                <span class="pb-cta"><span class="pb-long">Políticas de envío y pago</span><span class="pb-short">Ver políticas</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
+                <span class="pb-cta"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span>
             </button>
 
-            <h2 class="text-center text-sm uppercase tracking-widest text-gray-400 mb-5">Todo el catálogo</h2>
+            <h2 class="text-center text-sm   text-gray-400 mb-5">Todo el catálogo</h2>
             <div id="inicio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16"></div>
 
         </section>
@@ -503,13 +903,13 @@
 
             <div role="tablist" aria-label="Categorías del catálogo" class="cat-tabs flex flex-wrap justify-center gap-3 mb-8">
                 <button type="button" role="tab" data-cat="coreana" aria-selected="true" tabindex="0" id="tab-coreana" aria-controls="cat-coreana"
-                    class="cat-tab border border-[#333333] rounded-full px-5 py-2 text-sm uppercase tracking-wider text-gray-300 hover:border-[#84224A] transition-colors">Moda Coreana</button>
+                    class="cat-tab border border-[#333333] rounded-full px-5 py-2 text-sm   text-gray-300 hover:border-[#84224A] transition-colors">Moda Coreana</button>
                 <button type="button" role="tab" data-cat="alternativo" aria-selected="false" tabindex="0" id="tab-alternativo" aria-controls="cat-alternativo"
-                    class="cat-tab border border-[#333333] rounded-full px-5 py-2 text-sm uppercase tracking-wider text-gray-300 hover:border-[#84224A] transition-colors">Alternativo</button>
+                    class="cat-tab border border-[#333333] rounded-full px-5 py-2 text-sm   text-gray-300 hover:border-[#84224A] transition-colors">Alternativo</button>
                 <button type="button" role="tab" data-cat="gotico" aria-selected="false" tabindex="0" id="tab-gotico" aria-controls="cat-gotico"
-                    class="cat-tab border border-[#333333] rounded-full px-5 py-2 text-sm uppercase tracking-wider text-gray-300 hover:border-[#84224A] transition-colors">Gótico</button>
+                    class="cat-tab border border-[#333333] rounded-full px-5 py-2 text-sm   text-gray-300 hover:border-[#84224A] transition-colors">Gótico</button>
                 <button type="button" role="tab" data-cat="accesorios" aria-selected="false" tabindex="0" id="tab-accesorios" aria-controls="cat-accesorios"
-                    class="cat-tab border border-[#333333] rounded-full px-5 py-2 text-sm uppercase tracking-wider text-gray-300 hover:border-[#84224A] transition-colors">Accesorios</button>
+                    class="cat-tab border border-[#333333] rounded-full px-5 py-2 text-sm   text-gray-300 hover:border-[#84224A] transition-colors">Accesorios</button>
             </div>
 
             <div id="cat-coreana" role="tabpanel" aria-labelledby="tab-coreana" class="cat-panel active"></div>
@@ -540,7 +940,7 @@
     <!-- Plantilla de bloque de sub-sección dentro de una categoría -->
     <template id="subsection-template">
         <div class="sub-block mb-14">
-            <h3 class="sub-title text-left text-lg font-bold uppercase tracking-wider mb-5 pb-2 border-b border-[#262626]"></h3>
+            <h3 class="sub-title text-left text-lg font-bold   mb-5 pb-2 border-b border-[#262626]"></h3>
             <div class="sub-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"></div>
         </div>
     </template>
@@ -602,7 +1002,7 @@
             class="bg-[#1A1A1A] border-l border-[#3d3d3d]">
 
             <div class="cart-head">
-                <h2 id="cart-title" class="text-lg font-bold uppercase tracking-wider">Tu carrito<span id="cart-title-count" class="badge" aria-hidden="true"></span></h2>
+                <h2 id="cart-title" class="text-lg font-bold  ">Tu carrito<span id="cart-title-count" class="badge" aria-hidden="true"></span></h2>
                 <button type="button" id="cart-close" aria-label="Cerrar carrito" class="text-gray-400 hover:text-white text-3xl leading-none w-11 h-11 flex items-center justify-center rounded-full hover:bg-[#262626]">&times;</button>
             </div>
 
@@ -614,6 +1014,18 @@
                 </div>
             </div>
 
+            <div id="cart-confirm" class="cart-confirm hidden" role="alertdialog" aria-modal="true" aria-labelledby="cc-title" aria-describedby="cc-text">
+                <div class="cc-box">
+                    <div class="cc-ico" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 002 2h6a2 2 0 002-2l1-12M9 7V4h6v3"/></svg></div>
+                    <h3 id="cc-title" class="cc-title">¿Quitar producto?</h3>
+                    <p id="cc-text" class="cc-text"></p>
+                    <div class="cc-btns">
+                        <button type="button" id="cc-no" class="cc-btn cc-no">No, conservar</button>
+                        <button type="button" id="cc-yes" class="cc-btn cc-yes">Sí, quitar</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="cart-foot">
                 <p class="note">Máximo 10 unidades por artículo y 30 artículos en total.</p>
                 <p class="total-row">
@@ -621,7 +1033,7 @@
                     <span id="cart-total" class="amt">$0.00</span>
                 </p>
                 <button type="button" id="cart-checkout-btn" disabled
-                    class="bg-[#84224A] hover:bg-[#A02C5E] disabled:opacity-40 disabled:cursor-not-allowed text-white border-none py-3 px-5 min-h-[52px] cursor-pointer rounded-lg font-bold uppercase tracking-wider transition duration-300 w-full">
+                    class="bg-[#84224A] hover:bg-[#A02C5E] disabled:opacity-40 disabled:cursor-not-allowed text-white border-none py-3 px-5 min-h-[52px] cursor-pointer rounded-lg font-bold   transition duration-300 w-full">
                     Ir a pagar
                 </button>
             </div>
@@ -637,7 +1049,7 @@
                 <button type="button" id="checkout-close" aria-label="Cerrar ventana de compra" class="absolute top-2 right-3 text-gray-400 hover:text-white text-3xl leading-none w-11 h-11 flex items-center justify-center">&times;</button>
 
                 <form id="checkout-form" novalidate>
-                    <h2 id="checkout-title" class="text-xl font-bold uppercase tracking-wider mb-5 pr-10">Finalizar compra</h2>
+                    <h2 id="checkout-title" class="text-xl font-bold   mb-5 pr-10">Finalizar compra</h2>
                     <p id="form-summary" class="hidden mb-4 rounded-md border border-[#f87171] bg-[#2a1414] px-3 py-2 text-sm text-[#fca5a5]"></p>
 
                     <div class="grid gap-8 lg:gap-0 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
@@ -659,22 +1071,22 @@
                                 <h3 id="sec-datos" class="sec-title"><span class="step" aria-hidden="true">1</span>Tus datos</h3>
                                 <div class="grid gap-3 sm:grid-cols-2">
                                     <div class="sm:col-span-2">
-                                        <label for="nombre" class="block text-xs uppercase tracking-wider text-gray-400 mb-1.5">Nombre completo</label>
+                                        <label for="nombre" class="block text-xs   text-gray-400 mb-1.5">Nombre completo</label>
                                         <input type="text" id="nombre" name="nombre" required maxlength="60" autocomplete="name" aria-required="true" placeholder="Ej. María Pérez" class="co-input w-full bg-[#0D0D0D] border border-[#6b7280] rounded-md text-white">
                                     </div>
                                     <div>
-                                        <label for="telefono" class="block text-xs uppercase tracking-wider text-gray-400 mb-1.5">Celular</label>
+                                        <label for="telefono" class="block text-xs   text-gray-400 mb-1.5">Celular</label>
                                         <input type="tel" id="telefono" name="telefono" required maxlength="10" inputmode="numeric" autocomplete="tel-national" aria-required="true" placeholder="09XXXXXXXX" class="co-input w-full bg-[#0D0D0D] border border-[#6b7280] rounded-md text-white">
                                     </div>
                                     <div>
-                                        <label for="email" class="block text-xs uppercase tracking-wider text-gray-400 mb-1.5">Correo (opcional)</label>
+                                        <label for="email" class="block text-xs   text-gray-400 mb-1.5">Correo (opcional)</label>
                                         <input type="text" id="email" name="email" maxlength="80" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="nombre@correo.com" class="co-input w-full bg-[#0D0D0D] border border-[#6b7280] rounded-md text-white">
                                     </div>
                                 </div>
                             </section>
 
                             <fieldset>
-                                <legend class="sec-title w-full"><span class="step" aria-hidden="true">2</span>Cómo quieres pagar</legend>
+                                <legend class="sec-title w-full"><span class="step" aria-hidden="true">2</span><span id="pay-legend-txt">Cómo quieres pagar</span></legend>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <label id="pay-opt-transfer" class="pay-option rounded-md py-3 px-4 text-sm">
                                         <input type="radio" name="pago" value="Transferencia" class="sr-only">
@@ -695,11 +1107,11 @@
                                 <!-- Dirección: solo con envío a domicilio -->
                                 <div id="delivery-fields" class="mt-4 grid gap-3 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
                                     <div>
-                                        <label for="direccion" class="block text-xs uppercase tracking-wider text-gray-400 mb-1.5">Dirección de entrega</label>
+                                        <label for="direccion" class="block text-xs   text-gray-400 mb-1.5">Dirección de entrega</label>
                                         <input type="text" id="direccion" name="direccion" required maxlength="120" autocomplete="street-address" aria-required="true" placeholder="Calle, número, referencia" class="co-input w-full bg-[#0D0D0D] border border-[#6b7280] rounded-md text-white">
                                     </div>
                                     <div>
-                                        <label id="ciudad-label" for="ciudad-btn" class="block text-xs uppercase tracking-wider text-gray-400 mb-1.5">Ciudad</label>
+                                        <label id="ciudad-label" for="ciudad-btn" class="block text-xs   text-gray-400 mb-1.5">Ciudad</label>
                                         <div class="city-select" id="city-select"><select id="ciudad" name="ciudad" autocomplete="address-level2" tabindex="-1" aria-hidden="true" class="sr-only"><option value="Quito" selected>Quito</option><option value="Guayaquil">Guayaquil</option><option value="Cuenca">Cuenca</option><option value="Otra">Otra ciudad del Ecuador</option></select><button type="button" id="ciudad-btn" class="city-btn co-input" aria-haspopup="listbox" aria-expanded="false" aria-controls="ciudad-list" aria-labelledby="ciudad-label ciudad-btn"><span id="ciudad-val"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><ul id="ciudad-list" class="city-list" role="listbox" aria-labelledby="ciudad-label" tabindex="-1" hidden><li id="ciudad-opt-0" role="option" class="city-opt" data-value="Quito"><span>Quito</span><svg class="tick" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></li><li id="ciudad-opt-1" role="option" class="city-opt" data-value="Guayaquil"><span>Guayaquil</span><svg class="tick" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></li><li id="ciudad-opt-2" role="option" class="city-opt" data-value="Cuenca"><span>Cuenca</span><svg class="tick" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></li><li id="ciudad-opt-3" role="option" class="city-opt" data-value="Otra"><span>Otra ciudad del Ecuador</span><svg class="tick" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></li></ul></div>
                                     </div>
                                 </div>
@@ -708,7 +1120,7 @@
                                 <div id="pay-detail-Transferencia" class="pay-detail mt-4 space-y-3">
                                     <div class="flex items-center justify-between gap-3 rounded-lg border border-[#6b7280] bg-[#0D0D0D] px-4 py-3">
                                         <div>
-                                            <p class="text-xs uppercase tracking-widest text-gray-400">Monto a transferir</p>
+                                            <p class="text-xs   text-gray-400">Monto a transferir</p>
                                             <p id="transfer-amount" class="text-2xl font-bold text-[#F5F5F0] mt-0.5"></p>
                                         </div>
                                         <button type="button" class="copy-btn" id="copy-amount" aria-label="Copiar monto a transferir">Copiar</button>
@@ -718,7 +1130,7 @@
                                         <dl class="rounded-lg border border-[#262626] divide-y divide-[#262626] text-sm self-start">
                                             <div class="flex justify-between gap-3 px-3 py-2"><dt class="text-gray-400">Banco</dt><dd class="text-right text-[#F5F5F0]">Banco Pichincha</dd></div>
                                             <div class="flex justify-between gap-3 px-3 py-2"><dt class="text-gray-400">Tipo</dt><dd class="text-right text-[#F5F5F0]">Cuenta de ahorros</dd></div>
-                                            <div class="flex justify-between items-center gap-3 px-3 py-2"><dt class="text-gray-400">N.º de cuenta</dt><dd class="text-right text-[#F5F5F0] flex items-center gap-2"><span class="font-bold tracking-wider">2200 1234 56</span><button type="button" class="copy-btn copy-btn-sm" id="copy-account" aria-label="Copiar número de cuenta">Copiar</button></dd></div>
+                                            <div class="flex justify-between items-center gap-3 px-3 py-2"><dt class="text-gray-400">N.º de cuenta</dt><dd class="text-right text-[#F5F5F0] flex items-center gap-2"><span class="font-bold ">2200 1234 56</span><button type="button" class="copy-btn copy-btn-sm" id="copy-account" aria-label="Copiar número de cuenta">Copiar</button></dd></div>
                                             <div class="flex justify-between gap-3 px-3 py-2"><dt class="text-gray-400">Titular</dt><dd class="text-right text-[#F5F5F0]">Noctis Wear S.A.S.</dd></div>
                                             <div class="flex justify-between gap-3 px-3 py-2"><dt class="text-gray-400">RUC</dt><dd class="text-right text-[#F5F5F0]">1791234567001</dd></div>
                                         </dl>
@@ -732,7 +1144,7 @@
 
                                     <!-- Comprobante -->
                                     <div class="rounded-lg border border-[#262626] p-3">
-                                        <label for="comprobante" class="block text-xs uppercase tracking-wider text-gray-400 mb-1.5">Comprobante de transferencia</label>
+                                        <label for="comprobante" class="block text-xs   text-gray-400 mb-1.5">Comprobante de transferencia</label>
                                         <input type="file" id="comprobante" accept="image/*,.pdf" data-hint="comprobante-ayuda" aria-describedby="comprobante-ayuda" class="w-full text-sm text-gray-300 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border file:border-[#6b7280] file:bg-[#262626] file:text-[#F5F5F0] file:cursor-pointer hover:file:border-[#84224A] file:transition-colors">
                                         <p id="comprobante-ayuda" class="text-xs text-gray-400 mt-2">Imagen o PDF, máximo 5 MB.</p>
                                         <p id="comprobante-nombre" class="text-xs text-gray-400 mt-1" aria-live="polite">Ningún archivo seleccionado.</p>
@@ -741,47 +1153,57 @@
 
                                 <!-- Detalle: Retiro en local -->
                                 <div id="pay-detail-Retiro" class="pay-detail hidden mt-4 rounded-lg border border-[#262626] p-4 space-y-3 text-sm text-gray-300">
-                                    <p class="font-bold text-[#F5F5F0]">Pagas cuando recojas tu pedido</p>
+                                    <p class="font-bold text-[#F5F5F0] flex items-center gap-2.5"><svg class="w-6 h-6 flex-shrink-0 text-[#F5F5F0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5L5.5 4h13L20 9.5"/><path d="M4 9.5a2.67 2.67 0 005.33 0 2.67 2.67 0 005.34 0 2.67 2.67 0 005.33 0"/><path d="M5.5 12.5V20h13v-7.5M10 20v-4.5h4V20"/></svg>Pagas cuando recojas tu pedido</p>
                                     <p>Retiro en: <span id="store-address" class="text-[#F5F5F0]"></span></p>
                                     <p>Monto a pagar al retirar: <strong id="pickup-amount" class="text-[#F5F5F0]"></strong></p>
                                     <p>Te contactaremos al celular que ingresaste cuando tu pedido esté listo.</p>
                                 </div>
                             </fieldset>
 
-                            <button type="submit" id="checkout-submit" class="bg-[#84224A] hover:bg-[#A02C5E] disabled:opacity-60 disabled:cursor-not-allowed text-white border-none py-3 px-5 min-h-[48px] cursor-pointer rounded-md font-bold uppercase tracking-wider transition duration-300 w-full">
+                            <div class="co-submit-bar"><button type="submit" id="checkout-submit" class="bg-[#84224A] hover:bg-[#A02C5E] disabled:opacity-60 disabled:cursor-not-allowed text-white border-none py-3 px-5 min-h-[48px] cursor-pointer rounded-md font-bold   transition duration-300 w-full">
                                 Confirmar pedido
-                            </button>
+                            </button></div>
                         </div>
                     </div>
                 </form>
             </div>
 
             <div id="checkout-confirm-step" class="hidden conf">
-                <div class="ok-badge" aria-hidden="true">✓</div>
-                <h2 id="confirm-title" tabindex="-1" class="conf-title">¡Pedido confirmado!</h2>
-                <p class="conf-sub">Recibimos tu pedido. Guarda tu código por si necesitas consultarlo.</p>
-
-                <div class="conf-code">
-                    <span class="conf-lbl">Código de pedido</span>
-                    <span id="confirm-codigo" class="conf-code-val"></span>
+                <div class="conf-head">
+                    <div class="ok-badge" aria-hidden="true">✓</div>
+                    <h2 id="confirm-title" tabindex="-1" class="conf-title">¡Pedido confirmado!</h2>
+                    <p class="conf-sub">Recibimos tu pedido. Guarda tu código por si necesitas consultarlo.</p>
                 </div>
 
-                <dl class="conf-list">
-                    <div><dt>A nombre de</dt><dd id="confirm-nombre"></dd></div>
-                    <div><dt id="confirm-entrega-lbl">Entrega</dt><dd id="confirm-entrega"></dd></div>
-                    <div><dt>Forma de pago</dt><dd id="confirm-pago"></dd></div>
-                    <div class="conf-total"><dt>Total</dt><dd id="confirm-total"></dd></div>
-                </dl>
+                <div class="conf-body" tabindex="0" role="region" aria-label="Detalle del pedido">
+                    <dl class="conf-list">
+                        <div class="conf-code-row"><dt>Código de pedido</dt><dd id="confirm-codigo" class="conf-code-val"></dd></div>
+                        <div><dt>A nombre de</dt><dd id="confirm-nombre"></dd></div>
+                        <div><dt id="confirm-entrega-lbl">Entrega</dt><dd id="confirm-entrega"></dd></div>
+                        <div><dt>Forma de pago</dt><dd id="confirm-pago"></dd></div>
+                        <div class="conf-total"><dt>Total</dt><dd id="confirm-total"></dd></div>
+                    </dl>
 
-                <div class="conf-note">
-                    <p id="confirm-pago-detalle"></p>
-                    <p id="confirm-tiempo"></p>
+                    <div class="conf-note">
+                        <p id="confirm-pago-detalle"></p>
+                        <p id="confirm-tiempo"></p>
+                    </div>
+
+                    <div class="conf-send" role="note">
+                        <span class="conf-send-ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+                        <p id="confirm-aviso"></p>
+                    </div>
                 </div>
 
-                <button type="button" id="checkout-done" class="bg-[#84224A] hover:bg-[#A02C5E] text-white border-none py-3 px-5 min-h-[52px] cursor-pointer rounded-lg font-bold uppercase tracking-wider transition duration-300 w-full">
-                    Cerrar
-                </button>
+                <div class="conf-foot">
+                    <button type="button" id="checkout-download" class="conf-dl">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11L12 15.5 16.5 11M5 19.5h14"/></svg>
+                        <span class="conf-dl-txt"><span>Descargar comprobante</span></span>
+                    </button>
+                    <button type="button" id="checkout-done" class="conf-close">Cerrar</button>
+                </div>
             </div>
+        </div>
         </div>
     </div>
 
@@ -849,6 +1271,165 @@
         { id: 'ac5', cat: 'accesorios', sub: 'Bolsos y otros', name: 'Mochila Táctica Negra', price: 34.00, img: 'https://images.unsplash.com/photo-1680039211156-66c721b87625?auto=format&fit=crop&w=600&q=70', alt: 'Mochila táctica negra con múltiples compartimentos' }
     ];
 
+    // ---------- PRODUCTOS ADICIONALES (10 por subcategoría) ----------
+    // Cada producto usa su foto real (objeto FOTOS, por nombre). Los que no tienen foto muestran una ilustración de referencia.
+    // Para agregar una foto, añade una línea 'Nombre del producto': 'URL' en FOTOS.
+    (function () {
+        const SETS = [["coreana", "Tops y capas", "top", ["Blusa Puff Blanca|24", "Suéter Rayado Crema|30", "Camisa Oversize Celeste|28", "Crop Top Acanalado Negro|16", "Cárdigan Corto Gris|29", "Polera Manga Larga Beige|21", "Blazer Crop Negro|44|jacket"]], ["coreana", "Pantalones", "pants", ["Jean Recto Azul Claro|36", "Pantalón Sastre Gris|38", "Falda Midi Plisada Negra|30|skirt", "Short Denim Tiro Alto|24", "Pantalón Cargo Beige|37", "Falda Tableada Cuadros|29|skirt", "Jogger Holgado Gris|31", "Pantalón Fluido Crema|34"]], ["coreana", "Calzado", "shoe", ["Sneakers Blancos Clásicos|42", "Mocasines Negros Suela Gruesa|46", "Botines Beige Cremallera|49|boot", "Zapatillas Retro Gris|44", "Sandalias Plataforma Negras|38", "Flats Punta Cuadrada Crema|36", "Loafers Charol Negros|47", "Botas Cortas Chelsea Negras|54|boot"]], ["alternativo", "Camisetas y tops", "top", ["Camiseta Boxy Negra|17", "Top Manga Larga Rayado|19", "Camiseta Tie Dye Gris|20", "Hoodie Oversize Negro|36|jacket", "Camiseta Malla Transparente|18", "Tank Top Negro Ajustado|14", "Polo Vintage Verde Oliva|23", "Camiseta Estampada Calavera|21"]], ["alternativo", "Pantalones", "pants", ["Jean Negro Rasgado|39", "Pantalón Parachute Gris|36", "Jean Cargo Azul|40", "Pantalón Cadenas Negro|41", "Short Baggy Negro|25", "Pantalón Cuadros Rojo y Negro|37", "Jean Wide Leg Claro|38", "Pantalón Track Lateral Negro|33"]], ["alternativo", "Chaquetas", "jacket", ["Chaqueta Denim Oversize|43", "Cortaviento Negro|39", "Chaqueta Varsity Vino|52", "Parka Verde Oliva|58", "Chaqueta Trucker Negra|46", "Chaleco Acolchado Negro|37", "Chaqueta Cuero Corta Negra|49", "Abrigo Corto Gris|55"]], ["alternativo", "Calzado y gorras", "shoe", ["Gorra Snapback Negra|16|cap", "Gorro Beanie Gris|12|cap", "Gorra Dad Hat Vino|15|cap", "Bucket Hat Negro|14|cap", "Zapatillas Chunky Blancas|46", "Skate Shoes Negras|44", "Botines Cuero Negros|52|boot", "Sneakers Altos Negros|48"]], ["gotico", "Tops y corsets", "top", ["Corset Cruzado Negro|29", "Top Malla Manga Larga Negro|20", "Bustier Satén Vino|27", "Camisa Victoriana Blanca|33", "Top Cadenas Negro|22", "Chaleco Corset Terciopelo Negro|35", "Crop Top Telaraña Negro|19", "Blusa Cuello Alto Encaje Negra|28"]], ["gotico", "Faldas y vestidos", "dress", ["Falda Mini Tablas Negra|27|skirt", "Vestido Corset Negro|49", "Falda Larga Satén Vino|34|skirt", "Vestido Encaje Manga Larga Negro|54", "Falda Asimétrica Tul Negra|32|skirt", "Vestido Camisero Negro|46", "Falda Cuadros Rojo y Negro|28|skirt", "Vestido Midi Terciopelo Vino|56"]], ["gotico", "Calzado", "boot", ["Botas Rodilla Negras|62", "Zapatos Creepers Negros|48|shoe", "Botines Hebillas Negros|46", "Mary Jane Plataforma Negras|45|shoe", "Botas Combat Plataforma Negras|55", "Zapatillas Altas Negras|43|shoe", "Botines Tacón Cuadrado Negros|47", "Sandalias Tiras Negras|37|shoe"]], ["accesorios", "Joyería", "jewel", ["Collar Cruz Plateada|9", "Anillos Set x5 Plateados|11", "Pulsera Cadena Gruesa Plateada|8", "Aretes Cruz Colgante Plateados|9", "Collar Perlas Negras|12", "Brazalete Pinchos Plateado|10", "Aretes Luna Plateados|8"]], ["accesorios", "Bolsos y otros", "bag", ["Cinturón Hebilla Plateada|14|acc", "Bandolera Negra|26", "Riñonera Utilitaria Negra|22", "Tote Bag Estampada Beige|18", "Guantes Sin Dedos Negros|11|acc", "Medias Rayadas Altas|9|acc", "Gafas Rectangulares Negras|16|acc", "Cartera Cadena Negra|21"]]];
+        const SHAPES = {
+            top: 'M110 60 L60 80 L40 135 L75 148 L85 125 L85 235 L215 235 L215 125 L225 148 L260 135 L240 80 L190 60 C180 85 120 85 110 60 Z',
+            jacket: 'M110 55 L58 78 L38 140 L74 152 L84 128 L84 240 L216 240 L216 128 L226 152 L262 140 L242 78 L190 55 L150 100 Z M150 100 L150 240',
+            pants: 'M95 50 L205 50 L228 252 L166 252 L150 120 L134 252 L72 252 Z',
+            skirt: 'M108 66 L192 66 L252 246 L48 246 Z M108 66 L192 66 L192 82 L108 82 Z',
+            dress: 'M122 46 L178 46 L188 108 L254 252 L46 252 L112 108 Z M112 108 L188 108',
+            shoe: 'M48 176 L48 124 C92 124 104 100 112 78 L138 90 C152 132 204 142 252 162 L264 204 L48 204 Z',
+            boot: 'M104 46 L176 46 L176 150 L252 176 L258 234 L92 234 Z',
+            cap: 'M70 178 C70 96 230 96 230 178 Z M70 178 L276 192 C276 204 70 204 70 192 Z',
+            jewel: 'M150 40 m-62 0 a62 62 0 1 0 124 0 a62 62 0 1 0 -124 0 M150 152 L172 180 L150 232 L128 180 Z',
+            bag: 'M68 112 L232 112 L248 252 L52 252 Z M108 112 C108 44 192 44 192 112',
+            acc: 'M150 56 L244 150 L150 244 L56 150 Z'
+        };
+        const NO_SIZE = { cap: 1, jewel: 1, bag: 1, acc: 1 };
+        const BG = { coreana: '#4a2a42', alternativo: '#2f3340', gotico: '#4a1a30', accesorios: '#2d3a3a' };
+        const LABEL = { coreana: 'moda coreana', alternativo: 'estilo alternativo', gotico: 'estilo gótico', accesorios: 'accesorios' };
+        const COLORS = [['vino', '#84224A'], ['rojo', '#8f2a2a'], ['negr', '#242424'], ['blanc', '#e8e8e2'], ['crema', '#d9ccb0'], ['beige', '#cdb98f'], ['gris', '#8a8d94'], ['celeste', '#8fb6d9'], ['azul', '#3b5b8c'], ['claro', '#7f9bc4'], ['plate', '#c0c4cc'], ['oliva', '#5b6b45'], ['verde', '#4d6b4d']];
+        function colorFor(name) {
+            const n = name.toLowerCase();
+            for (let i = 0; i < COLORS.length; i++) if (n.indexOf(COLORS[i][0]) !== -1) return COLORS[i][1];
+            return '#5a5a66';
+        }
+        function art(kind, cat, name) {
+            const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">' +
+                '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + BG[cat] + '"/><stop offset="1" stop-color="#0D0D0D"/></linearGradient></defs>' +
+                '<rect width="300" height="300" fill="url(#g)"/>' +
+                '<path d="' + SHAPES[kind] + '" fill="' + colorFor(name) + '" stroke="#F5F5F0" stroke-opacity=".75" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>' +
+                '<text x="150" y="284" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#F5F5F0" fill-opacity=".6">Imagen de referencia</text></svg>';
+            return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+        }
+        // Fotos reales por nombre de producto; si una foto no carga se muestra la ilustración de referencia
+        const FOTOS = {
+            'Blusa Puff Blanca': 'https://chapurmx.vtexassets.com/arquivos/ids/482490/6237423-1.jpg?v=638911410074970000',
+            'Suéter Rayado Crema': 'https://image.uniqlo.com/UQ/ST3/AsianCommon/imagesgoods/468753/sub/goods_468753_sub14_3x4.jpg?width=494',
+            'Camisa Oversize Celeste': 'https://image.hm.com/assets/hm/e4/7a/e47a8ee8a9fe3885a6d71fffc9e45cd9fc1c6a1d.jpg?imwidth=2160',
+            'Cárdigan Corto Gris': 'https://img.alicdn.com/imgextra/i3/275758430/O1CN01jeDtLx2C8zRvPePHD_%21%21275758430.jpg',
+            'Blazer Crop Negro': 'https://photos.enjoei.com.br/blazer-cropped-com-bolso-preto-zara-novo-106989764/800x800/czM6Ly9waG90b3MuZW5qb2VpLmNvbS5ici9wcm9kdWN0cy8xNjU1MjcwOS9kNTdmYmI5M2Q3ZWMwMTk5NTA5Y2MzOTMzNWU5NDE0MC5qcGc',
+            'Jean Recto Azul Claro': 'https://yesfashion.ec/cdn/shop/files/Jean-anchos-para-mujer-estilo-palazo---1_1000x1000.jpg?v=1742940725',
+            'Falda Midi Plisada Negra': 'https://www.grazia.it/content/uploads/2024/03/Hm-2.jpg',
+            'Sneakers Blancos Clásicos': 'https://assets.avax.pe/static/50552414%2010275807%2001%20100_img_principal.JPEG',
+            'Crop Top Acanalado Negro': 'https://www.dynamicseamless.com/image/cache/catalog/categories/392_Black-480x560w.jpg',
+            'Pantalón Sastre Gris': 'https://felix.com.pa/cdn/shop/files/56205104229_1_2048x.png?v=1766078860',
+            'Short Denim Tiro Alto': 'https://mimosaforever.com/cdn/shop/collections/image00003_0716a0a6-7487-4ddd-82cd-abd5f7e1d71e.png?v=1766035349&width=1000',
+            'Pantalón Cargo Beige': 'https://www.elpalaciodehierro.com/on/demandware.static/-/Sites-palacio-master-catalog/default/dw80dcdf58/images/43095380/92-BEIGE/large/43095381_x1.jpg',
+            'Jogger Holgado Gris': 'https://media.sivasdescalzo.com/media/catalog/product/R/M/RMCH005C99FAB0010800_sivasdescalzo-Reebok-SWEAT_JOGGER-1715247960-1.jpg',
+            'Pantalón Fluido Crema': 'https://static.massimodutti.net/assets/public/ffd0/829d/ba624d2b9a0a/03a74136d116/0500380332311-o15/0500380332311-o15.jpg?ts=1773853541271',
+            'Mocasines Negros Suela Gruesa': 'https://image.hm.com/assets/hm/27/41/2741549f44d1175cd33a6c4dc030b3c3f2933344.jpg?imwidth=2160',
+            'Sandalias Plataforma Negras': 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaCL/883210969_1/public',
+            'Flats Punta Cuadrada Crema': 'https://image.uniqlo.com/GU/ST3/AsianCommon/imagesgoods/348920/sub/goods_348920_sub53.jpg?width=750',
+            'Loafers Charol Negros': 'https://www.naturalizer.com/blob/product-images/90051/ec/02/39003/ec0239003_pair_feed1000.jpg',
+            'Botas Cortas Chelsea Negras': 'https://i.ebayimg.com/images/g/61oAAOSwo~Bi7B-l/s-l1200.jpg',
+            'Top Manga Larga Rayado': 'https://image.hm.com/assets/hm/14/7d/147d91760d7f56b95bb529a3e8f231dcaee2a2f3.jpg?imwidth=2160',
+            'Camiseta Tie Dye Gris': 'https://fp-cms.directus.app/assets/410c1c78-ef36-4d31-ba2b-8f9f91c2e130',
+            'Hoodie Oversize Negro': 'https://shinigamiclothing.de/cdn/shop/files/BlankFrontOversizeHoodieBlack_0fc3dff2-eb76-4e5e-8bcc-9183c8c7e86d.png?v=1755089070&width=1024',
+            'Camiseta Malla Transparente': 'https://i5.walmartimages.com/seo/Miutii-Men-s-Mesh-See-Through-Fitted-Short-Sleeve-Muscle-Top-Black-M_24195c3d-5f7a-4476-81fc-1955e0839d17.65d7de30e3a852ea4fc714e69085b765.jpeg',
+            'Tank Top Negro Ajustado': 'https://argentwork.com/cdn/shop/products/RibbedTankinCottonElastane_Black_Ghost_142.jpg?v=1681837897',
+            'Polo Vintage Verde Oliva': 'https://media.falabella.com/falabellaPE/21349446_3/w%3D1500%2Ch%3D1500%2Cfit%3Dcover',
+            'Camiseta Estampada Calavera': 'https://n.nordstrommedia.com/it/416de6d0-117d-4151-bcd2-6f3e59fdc89f.jpeg?crop=pad&h=1196&w=780',
+            'Jean Negro Rasgado': 'https://ecdn6.globalso.com/upload/p/1941/image_product/2024-12/5-3.jpg',
+            'Pantalón Parachute Gris': 'https://d2cva83hdk3bwc.cloudfront.net/rundownyouth-rdy-parachute-cargo-pants-grey-2.jpg',
+            'Jean Cargo Azul': 'https://assets.laboutiqueofficielle.com/w_450%2Cq_auto%2Cf_auto/media/products/2024/10/10/mtx_440362_YX5614_20241031T151704_03.jpg',
+            'Pantalón Cadenas Negro': 'https://shop.r10s.jp/hanbokhome/cabinet/11556000/tb4388970_0.jpg',
+            'Short Baggy Negro': 'https://i5.walmartimages.com/seo/JIUKE-Plus-Size-High-Waisted-Shorts-for-Women-Straight-Leg-Baggy-Lounge-Streetwear-Shorts-with-Pockets_f9bc5ac4-f8d1-40ef-9f19-4a4177b477f0.28b7eb458cdd086ba19e751641959193.jpeg',
+            'Pantalón Cuadros Rojo y Negro': 'https://statics.devilinspired.com/image/cache/catalog/products/SD-066/-05-750x1000.jpg',
+            'Jean Wide Leg Claro': 'https://www.gef.co/cdn/shop/files/loxi-indigo-medio-40200-748623_040200-7.jpg?v=1749592814&width=1000',
+            'Pantalón Track Lateral Negro': 'https://static.netshoes.com.br/produtos/calca-masculina-helanca-chimpa-listras-lateral/06/BFV-0188-006/BFV-0188-006_zoom1.jpg?ts=1727951927',
+            'Chaqueta Denim Oversize': 'https://image.hm.com/assets/hm/ba/39/ba39d5d60bbc44cb8f38cfd1f6eb2741878ddaca.jpg?imwidth=2160',
+            'Cortaviento Negro': 'https://contents.mediadecathlon.com/m20647293/k%2436ad6b1619c35e64d81e3f8b1733977e/picture.jpg',
+            'Chaqueta Varsity Vino': 'https://s.alicdn.com/%40sc04/kf/S52d3db1d46f24510b925fa0572805bb2A/Letterman-Baseball-Winter-Varsity-Jacket-Letter-Maroon-Gold-Stand-Collar-Waterproof-Windproof-Breathable-PolyesterCotton.jpeg',
+            'Parka Verde Oliva': 'https://sergeblanco.com/cdn/shop/files/Parka_Megeve_militaire_1_d4382114-54f5-4312-a20c-b52fd36016f3.jpg?v=1742308159&width=533',
+            'Chaqueta Trucker Negra': 'https://photos-us.bazaarvoice.com/photo/2/cGhvdG86bGV2aXM/115bf6a6-5ac5-56ed-b610-e8ad0c8928ff',
+            'Chaleco Acolchado Negro': 'https://www.bfgcdn.com/1500_1500_90/032-1239/save-the-duck-rhus-kunstfaserweste.jpg',
+            'Chaqueta Cuero Corta Negra': 'https://image.hm.com/assets/hm/16/5f/165fcb7d93882a367e9cab54c05372640278082b.jpg?imwidth=768',
+            'Abrigo Corto Gris': 'https://dam.elcorteingles.es/producto/www-001058430200731-s0.jpg?height=1200&impolicy=Resize&width=967',
+            'Gorra Snapback Negra': 'https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/1280x1280/products/129/16217/1100_STOCK_CAP_BLACK__94465.1753757510.jpg?c=1',
+            'Gorro Beanie Gris': 'https://www.mecanicojeans.mx/cdn/shop/files/rn-image_picker_lib_temp_70defa1b-c524-43bf-9382-4fbdbb830588_1200x1200.jpg?v=1767677907',
+            'Gorra Dad Hat Vino': 'https://img.hutshopping.at/tf/1258/5/Dad-Hat-Strapback-Cap.50186_f27.jpg',
+            'Bucket Hat Negro': 'https://solematesneakers.com/cdn/shop/files/IMG-2836.png?v=1766121483&width=1445',
+            'Zapatillas Chunky Blancas': 'https://stevemadden.eu/cdn/shop/products/SM12000480-04005-002_01.jpg?v=1674460405',
+            'Skate Shoes Negras': 'https://media.falabella.com/falabellaPE/16291038_1/public',
+            'Botines Cuero Negros': 'https://dauss.com.pe/cdn/shop/files/4301BNEGRO_2.jpg?v=1772230000&width=3840',
+            'Sneakers Altos Negros': 'https://images.yampi.me/assets/stores/loja-my-store2/uploads/images/tenis-all-star-converse-cano-alto-preto-monochrome-33-63765c930152d-large.jpg',
+            'Corset Cruzado Negro': 'https://www.malltop1.com/UpLoad/Pro_Images_02/o_Criss-Cross-Leather-Corset-N7982_12_34_514.jpg',
+            'Top Malla Manga Larga Negro': 'https://img01.ztat.net/article/spp-media-p1/2ba9780b4c4940a8b3eda63e2f95fdf8/a144972cea0d4abea0126f5df2c69fbe.jpg?filter=packshot&imwidth=800',
+            'Bustier Satén Vino': 'https://cdna.lystit.com/1040/1300/n/photos/net-a-porter/771ac060/wiederhoeft-Burgundy-Salon-Silk-Satin-Bustier-Top.jpeg',
+            'Camisa Victoriana Blanca': 'https://s.alicdn.com/%40sc04/kf/H0e00dcfe0a3642d18a9b8564d125dbd9M/Lace-Shirt-Ruffle-High-Ruff-Collar-Button-up-Shirt-Long-Sleeves-Women-Lolita-Blouse-Tops-Elegant-Victorian-Elizabeth-Costume.jpg',
+            'Top Cadenas Negro': 'https://images.thebestshops.com/product_images/original/SL12553-031_01-9508d2.jpg',
+            'Chaleco Corset Terciopelo Negro': 'https://bupbes.com/cdn/shop/files/meghan_black_2_679f3120-eedd-46a5-a6a6-9f374f6a9b12.jpg?v=1777446282&width=1445',
+            'Crop Top Telaraña Negro': 'https://media.s-bol.com/q08LvxyP692r/Nkm88GL/550x682.jpg',
+            'Blusa Cuello Alto Encaje Negra': 'https://sophialustig.com/cdn/shop/files/2_f9bacf51-72c6-431a-b6ab-1d7fa9e798c7_grande.png?v=1731615585',
+            'Falda Mini Tablas Negra': 'https://lb5.dstatic.pl/images/product-details/161466414-cropp-plisowana-spodniczka-mini-czarny-cropp-l-cropp.jpg',
+            'Vestido Corset Negro': 'https://cdn11.bigcommerce.com/s-3wu6n/images/stencil/1280x1280/products/36505/125470/DSC_0128__00323.1692668632.jpg?c=2',
+            'Falda Larga Satén Vino': 'https://photos6.spartoo.cz/photos/305/30559814/30559814_1200_A.jpg',
+            'Vestido Encaje Manga Larga Negro': 'https://a.1stdibscdn.com/valentino-black-lace-long-sleeve-midi-dress-s-for-sale/v_13101/v_200167221691172414279/v_20016722_1691172415111_bg_processed.jpg',
+            'Falda Asimétrica Tul Negra': 'https://res.cloudinary.com/wolfandbadger/image/upload/f_auto%2Cq_auto%3Abest/products/asymmetric-black-tulle-skirt-layered-design-with-elastic-waist__e286e559bc57bf77383002a2a7172c6c',
+            'Vestido Camisero Negro': 'https://statics-cdn-v2.fashionette.net/transform/a7901101-21cd-4e6f-93e1-525a2b77315a/d332b5e62b74e819334c8922fc8ee8978be4923d',
+            'Falda Cuadros Rojo y Negro': 'https://www.emp.de/dw/image/v2/BBQV_PRD/on/demandware.static/-/Sites-master-emp/default/dwf64a7add/images/5/7/9/4/579461a.jpg?sfrm=png&sh=800&sm=fit&sw=1000',
+            'Vestido Midi Terciopelo Vino': 'https://hrd-live.cdn.scayle.cloud/images/76595b6af2d93edc9ce01efb269a2a13.jpg?quality=75',
+            'Mary Jane Plataforma Negras': 'https://images.tcdn.com.br/img/img_prod/971915/sapato_plataforma_boneca_391715_1039_2_d6bf69bbe7ae2c8fee04ed66a83a0c5d.jpg',
+            'Zapatos Creepers Negros': 'https://www.tukshoes.eu/cdn/shop/files/A9323_PTMAIN_1024x1024.jpg?v=1744192701',
+            'Botines Hebillas Negros': 'https://briganti.com.ar/cdn/shop/files/MCBO25366011-01.jpg?v=1747835273',
+            'Botas Rodilla Negras': 'https://static.wixstatic.com/media/a8fa84_994bf9b2b50544148f4d824690d4431b~mv2.jpg/v1/fill/w_820%2Ch_820%2Cal_c%2Cq_85%2Cenc_avif%2Cquality_auto/a8fa84_994bf9b2b50544148f4d824690d4431b~mv2.jpg',
+            'Botas Combat Plataforma Negras': 'https://di2ponv0v5otw.cloudfront.net/posts/2025/03/27/67e4fe18c4b73a583b196ef4/m_6893ee7121b801fdd6f11c5b.jpg',
+            'Zapatillas Altas Negras': 'https://cdn.media.amplience.net/i/frasersdev/24702503_o_a3.jpg?v=20241119170317',
+            'Botines Tacón Cuadrado Negros': 'https://shop-ayi.com/cdn/shop/files/south-black-3_2048x2048.jpg?v=1726704420',
+            'Sandalias Tiras Negras': 'https://eosfootwear.com/cdn/shop/files/Carmina_black_top01.jpg?v=1763607817&width=1000',
+            'Collar Cruz Plateada': 'https://bianc.com.au/cdn/shop/files/SB30100026-CROSSNECKRH_c3d90f6d-e7b1-4a10-8433-cdc9be47c8ec_800x.jpg?v=1769044960',
+            'Pulsera Cadena Gruesa Plateada': 'https://i.etsystatic.com/31645189/r/il/3e9175/4005082286/il_fullxfull.4005082286_1ld9.jpg',
+            'Aretes Cruz Colgante Plateados': 'https://i5.walmartimages.com/seo/Cross-Faith-Dangle-Hoop-Earrings-925-Sterling-Silver-Threader-Drop-Hoops-for-Women_b620b5d1-fe27-4927-b02f-cde67d4ab56e.fc01967900d3111208e4734ad11e100f.jpeg',
+            'Collar Perlas Negras': 'https://houseofpearls.com/cdn/shop/files/necklaces-10-11mm-colored-black-freshwater-versapearl-necklace-house-of-pearls-ft-33959353417860_1800x.jpg?v=1710181991',
+            'Aretes Luna Plateados': 'https://highsparksilver.com/cdn/shop/files/ER-380_HS-0_2024_81f6b094-5b0f-409f-bd2c-4ac550bc1abb.png?v=1771577277',
+            'Cinturón Hebilla Plateada': 'https://bottomsboutique.com/cdn/shop/products/e87862c83ffd54738303e5f2356349e4f21e0ca9129f94f549758172c011cab2_8da8a61c-3003-4c39-a314-16298488344b.jpg?v=1699115653&width=1946',
+            'Tote Bag Estampada Beige': 'https://product-images.therealreal.com/WSEZA59019_1_enlarged.jpg?auto=webp&width=3840',
+            'Medias Rayadas Altas': 'https://cdn.media.amplience.net/s/hottopic/13509601_hi?%24productMainDesktop%24=&fmt=auto',
+            'Gafas Rectangulares Negras': 'https://assets.myntassets.com/w_412%2Cq_50%2C%2Cdpr_3%2Cfl_progressive%2Cf_webp/assets/images/2025/SEPTEMBER/10/rVDnnSru_7add1ae18777476d881d673fea05e0c5.jpg',
+            'Cartera Cadena Negra': 'https://vulkit.com/cdn/shop/files/VW144-Urban-Black_044282c2-533d-44c9-b317-911a72a22401.webp?crop=center&height=1200&v=1770863082&width=1200',
+            'Falda Tableada Cuadros': 'https://static.zara.net/assets/public/881a/597d/9e7d4c19b4d5/3f8d37a9e6d6/02795756711-e1/02795756711-e1.jpg?ts=1746454160196&w=560',
+            'Botines Beige Cremallera': 'https://os-d51z3-380700.meinecloud.io/b10232/prod/thumbnail/0b/7c/b7/676863_553-250258_1_800x800.jpg?ts=1777045281',
+            'Zapatillas Retro Gris': 'https://static.ftshp.digital/img/p/1/4/1/2/4/7/3/1412473.jpg',
+            'Polera Manga Larga Beige': 'https://lorenzodipontti.cl/cdn/shop/files/10950420-1.jpg?v=1781726115&width=1080',
+            'Camiseta Boxy Negra': 'https://dynamobrand.ec/cdn/shop/files/CamisetaBoxyFitBasicaNegro7.jpg?v=1764284337&width=1080',
+            'Anillos Set x5 Plateados': 'https://images.wear2.jp/item/80975547/36d356e253e07/20240728012227531_500.jpg',
+            'Brazalete Pinchos Plateado': 'https://www.santa-calavera.com/cdn/shop/files/brazalete-gotico_1200x1200.jpg?v=1684193128',
+            'Bandolera Negra': 'https://d3fvqmu2193zmz.cloudfront.net/items_2/uid_commerces.1/uid_items_2.2026032717431637393/1500x1500/69CD96F174606-Bolso-Crossbody-Mujer-Nelly-Chico.webp',
+            'Riñonera Utilitaria Negra': 'https://tanteguerilla.com/media/image/product/122284/lg/bagbase-bg842-molle-utility-waist-bag-black.jpg',
+            'Guantes Sin Dedos Negros': 'https://media.adeo.com/mkp/a54a91fbf301c2b05910dca839b4bf63/media.jpeg?fit=bounds&format=jpg&height=3000&quality=80&width=3000'
+        };
+        let n = 0;
+        SETS.forEach(function (s) {
+            s[3].forEach(function (raw) {
+                const f = raw.split('|'), kind = f[2] || s[2];
+                n++;
+                products.push({
+                    id: 'g' + n, cat: s[0], sub: s[1], name: f[0], price: parseFloat(f[1]),
+                    img: FOTOS[f[0]] || art(kind, s[0], f[0]),
+                    fb: art(kind, s[0], f[0]),
+                    alt: (FOTOS[f[0]] ? 'Foto de ' : 'Ilustración de referencia de ') + f[0].toLowerCase(),
+                    ns: !!NO_SIZE[kind],
+                    desc: f[0] + ': ' + s[1].toLowerCase() + ' de ' + LABEL[s[0]] + '. Fácil de combinar con el resto de tu outfit.'
+                });
+            });
+        });
+        function kindOf(q) {
+            if (q.id === 'al4') return 'cap';
+            if (q.cat === 'accesorios') return q.sub === 'Joyería' ? 'jewel' : 'bag';
+            if (q.sub.indexOf('Calzado') !== -1) return /bota|botin/i.test(q.name) ? 'boot' : 'shoe';
+            if (q.sub === 'Faldas y vestidos') return /falda/i.test(q.name) ? 'skirt' : 'dress';
+            if (q.sub === 'Pantalones') return /falda/i.test(q.name) ? 'skirt' : 'pants';
+            if (q.sub === 'Chaquetas') return 'jacket';
+            return 'top';
+        }
+        products.forEach(function (q) { if (!q.fb) q.fb = art(kindOf(q), q.cat, q.name); });
+    })();
+
     const cart = {}; // { "id" | "id|talla": cantidad }
 
     // ---------- UTILIDADES ----------
@@ -863,21 +1444,25 @@
         liveTimer = setTimeout(function () { live.textContent = msg; }, 60);
     }
     // Aviso visual breve + anuncio
-    function toast(msg) {
-        const warn = /^(Máximo|Tu carrito llegó|No se pudo|Elige)/.test(msg);
+    // type: 'ok' (verde), 'warn' (ámbar), 'info' (azul), 'error' (rojo). Si no se indica, se deduce del texto.
+    const TOAST_ICONS = { ok: '✓', warn: '!', info: 'i', error: '✕' };
+    const TOAST_TITLES = { ok: 'Listo', warn: 'Atención', info: 'Aviso', error: 'Error' };
+    function toast(msg, type, title) {
+        if (!type) {
+            type = /^(Máximo|Tu carrito llegó|Elige)/.test(msg) ? 'warn' : (/^No se pudo/.test(msg) ? 'error' : 'ok');
+        }
         document.getElementById('toast-text').textContent = msg;
-        document.getElementById('toast-icon').textContent = warn ? '!' : '✓';
-        toastEl.classList.toggle('warn', warn);
-        // Con el carrito o el pago abiertos, el aviso sale arriba para no tapar los botones
-        const overlayOpen = !document.getElementById('cart-overlay').classList.contains('hidden') || !document.getElementById('checkout-overlay').classList.contains('hidden');
-        toastEl.classList.toggle('top', overlayOpen);
+        document.getElementById('toast-title').textContent = title || TOAST_TITLES[type];
+        document.getElementById('toast-icon').textContent = TOAST_ICONS[type];
+        toastEl.classList.remove('ok', 'warn', 'info', 'error');
+        toastEl.classList.add(type);
         // Reinicia la animación (y la barra de tiempo) en cada aviso
         toastEl.classList.add('hidden');
         void toastEl.offsetWidth;
         toastEl.classList.remove('hidden');
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(hideToast, 4500);
-        announce(msg);
+        toastTimer = setTimeout(hideToast, 5000);
+        announce((title || TOAST_TITLES[type]) + '. ' + msg);
     }
     function hideToast() { toastEl.classList.add('hidden'); }
     toastEl.addEventListener('mouseenter', function () { clearTimeout(toastTimer); });
@@ -901,7 +1486,7 @@
 
     // Tallas por tipo de producto: ropa S-XL, calzado numérico, accesorios y gorras sin talla
     function sizesFor(p) {
-        if (p.cat === 'accesorios' || p.id === 'al4') return [];
+        if (p.ns || p.cat === 'accesorios' || p.id === 'al4') return [];
         if (p.sub.indexOf('Calzado') !== -1) return ['36', '37', '38', '39', '40'];
         return ['S', 'M', 'L', 'XL'];
     }
@@ -924,7 +1509,9 @@
         const img = node.querySelector('.prod-img');
         img.src = p.img;
         img.alt = p.alt;
-        img.addEventListener('error', function () { img.classList.add('opacity-0'); });
+        img.addEventListener('error', function () {
+            if (p.fb && img.getAttribute('src') !== p.fb) { img.src = p.fb; } else { img.classList.add('opacity-0'); }
+        });
         const detailBtn = node.querySelector('.detail-btn');
         detailBtn.setAttribute('aria-label', 'Ver detalles de ' + p.name);
         detailBtn.addEventListener('click', function () { openDetail(p, detailBtn); });
@@ -950,6 +1537,7 @@
                 sb.addEventListener('click', function (ev) {
                     sizeSel[p.id] = sizeSel[p.id] === sz ? '' : sz;
                     syncSizes(p.id);
+                    if (sizeSel[p.id]) toast(p.name, 'info', 'Talla ' + sizeSel[p.id] + ' elegida');
                     // Con teclado: al elegir talla, el foco pasa al + del mismo producto
                     if (ev.detail === 0 && sizeSel[p.id]) {
                         const addB = sb.closest('.product-card').querySelector('.add-btn');
@@ -967,7 +1555,7 @@
             const selectedSize = sizeSel[p.id] || '';
             if (sizes.length && !selectedSize) {
                 sizeHint.classList.remove('hidden');
-                announce('Elige una talla antes de agregar ' + p.name + '.');
+                toast(p.name, 'warn', 'Elige una talla primero');
                 sizesBox.querySelector('.size-btn').focus();
                 return;
             }
@@ -1007,7 +1595,7 @@
         bar.setAttribute('aria-label', 'Tipo de prenda');
         bar.className = 'flex flex-wrap items-center gap-2 mb-8';
         const barLabel = document.createElement('span');
-        barLabel.className = 'text-xs uppercase tracking-widest text-gray-400 mr-2';
+        barLabel.className = 'text-xs   text-gray-400 mr-2';
         barLabel.setAttribute('aria-hidden', 'true');
         barLabel.textContent = 'Tipo de prenda:';
         bar.appendChild(barLabel);
@@ -1062,6 +1650,11 @@
         window.scrollTo(0, 0);
     }
     tabButtons.forEach(function (btn) { btn.addEventListener('click', function () { showTab(btn.dataset.tab); }); });
+    // El logo lleva al inicio
+    document.getElementById('logo-home').addEventListener('click', function () {
+        showTab('inicio');
+        announce('Estás en Inicio.');
+    });
 
     // ---------- TABS DE CATEGORÍA (con flechas, Inicio y Fin) ----------
     const catTabs = Array.prototype.slice.call(document.querySelectorAll('.cat-tab'));
@@ -1254,16 +1847,19 @@
         const key = size ? id + '|' + size : id;
         const p = findProduct(id);
         if ((cart[key] || 0) >= MAX_PER_LINE) {
-            toast('Máximo ' + MAX_PER_LINE + ' unidades de ' + p.name + '.');
+            toast('Máximo ' + MAX_PER_LINE + ' por artículo', 'warn', 'Límite alcanzado');
             return false;
         }
         if (cartCount() >= MAX_ITEMS) {
-            toast('Tu carrito llegó al máximo de ' + MAX_ITEMS + ' artículos.');
+            toast('Máximo ' + MAX_ITEMS + ' artículos', 'warn', 'Carrito lleno');
             return false;
         }
         cart[key] = (cart[key] || 0) + 1;
         renderCart();
-        toast(p.name + (size ? ', talla ' + size : '') + ' agregado al carrito. Total: ' + cartCount() + (cartCount() === 1 ? ' artículo.' : ' artículos.'));
+        cartCountEl.classList.remove('pop');
+        void cartCountEl.offsetWidth;
+        cartCountEl.classList.add('pop');
+        toast(p.name + (size ? ' · Talla ' + size : ''), 'ok', 'Agregado al carrito');
         return true;
     }
 
@@ -1282,20 +1878,64 @@
         return groups;
     }
 
+    // Confirmación antes de quitar un producto (con el botón − en 1 unidad o con el basurero)
+    const ccEl = document.getElementById('cart-confirm');
+    const ccBtns = [document.getElementById('cc-no'), document.getElementById('cc-yes')];
+    let ccYes = null, ccFrom = null;
+    function askRemove(label, onYes) {
+        ccYes = onYes; ccFrom = document.activeElement;
+        document.getElementById('cc-text').textContent = label + ' saldrá de tu carrito. ¿Quieres quitarlo?';
+        ['.cart-head', '#cart-items', '.cart-foot'].forEach(function (q) { const el = cartPanel.querySelector(q); if (el) el.setAttribute('inert', ''); });
+        ccEl.classList.remove('hidden');
+        ccBtns[0].focus();
+    }
+    function closeAsk(ok) {
+        ccEl.classList.add('hidden');
+        ['.cart-head', '#cart-items', '.cart-foot'].forEach(function (q) { const el = cartPanel.querySelector(q); if (el) el.removeAttribute('inert'); });
+        const fn = ccYes; ccYes = null;
+        if (ok && fn) fn();
+        else if (ccFrom && document.body.contains(ccFrom)) ccFrom.focus();
+    }
+    ccBtns[0].addEventListener('click', function () { closeAsk(false); });
+    ccBtns[1].addEventListener('click', function () { closeAsk(true); });
+    ccEl.addEventListener('mousedown', function (e) { if (e.target === ccEl) closeAsk(false); });
+    window.addEventListener('keydown', function (e) {
+        if (ccEl.classList.contains('hidden')) return;
+        e.stopPropagation();
+        const k = e.key;
+        if (k === 'Escape') { e.preventDefault(); closeAsk(false); }
+        else if (k === 'Tab' || k.indexOf('Arrow') === 0) {
+            e.preventDefault();
+            const i = ccBtns.indexOf(document.activeElement);
+            const back = e.shiftKey || k === 'ArrowLeft' || k === 'ArrowUp';
+            ccBtns[(i + (back ? -1 : 1) + 2) % 2].focus();
+        }
+    }, true);
+
     function changeQty(key, delta, btnClass) {
+        if (delta < 0 && cart[key] === 1) {
+            const pr = findProduct(key.split('|')[0]), sz = key.split('|')[1];
+            askRemove(pr.name + (sz ? ' (talla ' + sz + ')' : ''), function () { applyQty(key, delta, btnClass); });
+            return;
+        }
+        applyQty(key, delta, btnClass);
+    }
+    function applyQty(key, delta, btnClass) {
         if (!cart[key]) return;
         const id = key.split('|')[0];
         const p = findProduct(id);
         if (delta > 0) {
-            if (cart[key] >= MAX_PER_LINE) { toast('Máximo ' + MAX_PER_LINE + ' unidades de ' + p.name + '.'); return; }
-            if (cartCount() >= MAX_ITEMS) { toast('Tu carrito llegó al máximo de ' + MAX_ITEMS + ' artículos.'); return; }
+            if (cart[key] >= MAX_PER_LINE) { toast('Máximo ' + MAX_PER_LINE + ' por artículo', 'warn', 'Límite alcanzado'); return; }
+            if (cartCount() >= MAX_ITEMS) { toast('Máximo ' + MAX_ITEMS + ' artículos', 'warn', 'Carrito lleno'); return; }
         }
         const index = cartGroups().findIndex(function (g) { return g.id === id; });
         cart[key] += delta;
         const removed = cart[key] <= 0;
         if (removed) delete cart[key];
         renderCart({ key: key, btn: btnClass, id: id, index: index });
-        announce(removed ? p.name + ' quitado del carrito.' : p.name + ', cantidad ' + cart[key] + '.');
+        if (removed) toast(p.name, 'info', 'Quitado del carrito');
+        else if (delta < 0) toast(p.name, 'info', 'Quedan ' + cart[key] + (cart[key] === 1 ? ' unidad' : ' unidades'));
+        else announce(p.name + ', cantidad ' + cart[key] + '.');
     }
 
     function removeProduct(id) {
@@ -1303,7 +1943,7 @@
         const index = cartGroups().findIndex(function (g) { return g.id === id; });
         Object.keys(cart).forEach(function (k) { if (k.split('|')[0] === id) delete cart[k]; });
         renderCart({ key: null, btn: '.qty-minus', id: id, index: index });
-        announce(p.name + ' quitado del carrito.');
+        toast(p.name, 'info', 'Quitado del carrito');
     }
 
     function renderCart(focusTarget) {
@@ -1351,7 +1991,9 @@
                     sr.querySelector('.qty-minus').addEventListener('click', function () { changeQty(key, -1, '.qty-minus'); });
                     sr.querySelector('.qty-plus').addEventListener('click', function () { changeQty(key, 1, '.qty-plus'); });
                 });
-                row.querySelector('.cart-remove').addEventListener('click', function () { removeProduct(g.id); });
+                const th = row.querySelector('.cart-thumb');
+                th.addEventListener('error', function () { if (p.fb && th.getAttribute('src') !== p.fb) th.src = p.fb; });
+                row.querySelector('.cart-remove').addEventListener('click', function () { askRemove(p.name, function () { removeProduct(g.id); }); });
                 cartItemsEl.appendChild(row);
             });
         }
@@ -1388,6 +2030,7 @@
         document.getElementById('cart-close').focus();
     }
     function closeCart(keepLocked) {
+        if (!ccEl.classList.contains('hidden')) { ccEl.classList.add('hidden'); ccYes = null; ['.cart-head', '#cart-items', '.cart-foot'].forEach(function (q) { const el = cartPanel.querySelector(q); if (el) el.removeAttribute('inert'); }); }
         cartOverlay.classList.add('hidden');
         if (!keepLocked) {
             setBackgroundLocked(false);
@@ -1422,6 +2065,9 @@
         tr.classList.add('hidden');
         tr.querySelector('input').disabled = true;
         tr.parentNode.classList.remove('sm:grid-cols-2');
+        // Con una sola forma de pago no hay nada que elegir: se muestra solo la información (sin botón)
+        tr.parentNode.style.display = 'none';
+        document.getElementById('pay-legend-txt').textContent = 'Pago y retiro';
         selectPay();
     }
 
@@ -1499,7 +2145,7 @@
 
     // Copiar monto y número de cuenta (para no tener que escribirlos)
     function copyText(text, okMsg, returnFocusTo) {
-        function done() { toast(okMsg); }
+        function done() { toast(okMsg, 'ok', 'Copiado'); }
         function fallback() {
             const ta = document.createElement('textarea');
             ta.value = text;
@@ -1511,7 +2157,7 @@
             try { ok = document.execCommand('copy'); } catch (err) {}
             document.body.removeChild(ta);
             if (returnFocusTo) returnFocusTo.focus();
-            if (ok) done(); else toast('No se pudo copiar. Selecciónalo y cópialo a mano.');
+            if (ok) done(); else toast('Selecciónalo y cópialo a mano', 'error', 'No se pudo copiar');
         }
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(text).then(done, fallback);
@@ -1533,6 +2179,8 @@
 
     // Quita caracteres de control y < > y espacios repetidos
     function clean(s) { return String(s).replace(/[\u0000-\u001F\u007F<>]/g, '').replace(/\s+/g, ' ').trim(); }
+    // Nombres siempre con la primera letra en mayúscula (así se guardan limpios en la base de datos)
+    function titleCase(s) { return s.toLowerCase().replace(/(^|[\s'.-])([a-záéíóúüñ])/g, function (m, a, b) { return a + b.toUpperCase(); }); }
 
     // Muestra o limpia el error de un campo (visible y para lector de pantalla)
     function fieldError(input, msg) {
@@ -1824,12 +2472,13 @@
         pdProduct = p; pdReturnTo = trigger;
         const extra = PRODUCT_EXTRA[p.id] || {};
         const img = document.getElementById('pd-img');
+        img.onerror = function () { if (p.fb && img.getAttribute('src') !== p.fb) img.src = p.fb; };
         img.src = p.img; img.alt = p.alt;
         document.getElementById('pd-cat').textContent = (CAT_NAMES[p.cat] || p.cat) + ' · ' + p.sub;
         document.getElementById('product-title').textContent = p.name;
         document.getElementById('pd-price').textContent = '$' + p.price.toFixed(2);
         const alt = p.alt.charAt(0).toUpperCase() + p.alt.slice(1);
-        document.getElementById('pd-desc').textContent = extra.desc || (alt + (/[.!?]$/.test(alt) ? '' : '.'));
+        document.getElementById('pd-desc').textContent = extra.desc || p.desc || (alt + (/[.!?]$/.test(alt) ? '' : '.'));
 
         const sizes = sizesFor(p);
         document.getElementById('pd-size-wrap').classList.toggle('hidden', sizes.length === 0);
@@ -1842,6 +2491,7 @@
             b.addEventListener('click', function () {
                 sizeSel[p.id] = sizeSel[p.id] === sz ? '' : sz;
                 syncSizes(p.id); paintPdSizes(); pdHint.classList.add('hidden');
+                if (sizeSel[p.id]) toast(p.name, 'info', 'Talla ' + sizeSel[p.id] + ' elegida');
             });
             pdSizes.appendChild(b);
         });
@@ -1849,7 +2499,7 @@
 
         const rows = [];
         Object.keys(extra.detalles || {}).forEach(function (k) { rows.push([k, extra.detalles[k]]); });
-        rows.push(['Tallas', sizes.length ? sizes.join(' · ') : 'Talla única']);
+        if (!sizes.length) rows.push(['Talla', 'Talla única']);
         rows.push(['Pago y retiro', 'En el local']);
         const dl = document.getElementById('pd-details');
         dl.innerHTML = '';
@@ -1879,7 +2529,7 @@
         const p = pdProduct, sizes = sizesFor(p), sz = sizeSel[p.id] || '';
         if (sizes.length && !sz) {
             pdHint.classList.remove('hidden');
-            announce('Elige una talla antes de agregar ' + p.name + '.');
+            toast(p.name, 'warn', 'Elige una talla primero');
             pdSizes.querySelector('.size-btn').focus();
             return;
         }
@@ -1922,6 +2572,7 @@
     // El texto sale de la configuración de arriba (PAGO_TRANSFERENCIA, STORE_ADDRESS, límites del carrito),
     // así el resumen, la ventana y el pago siempre dicen lo mismo.
     const POLICY_ICONS = {
+        info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/>',
         store: '<path d="M4 9.5L5.5 4h13L20 9.5"/><path d="M4 9.5a2.67 2.67 0 005.33 0 2.67 2.67 0 005.34 0 2.67 2.67 0 005.33 0"/><path d="M5.5 12.5V20h13v-7.5M10 20v-4.5h4V20"/>',
         cash: '<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6.5 9.5v.01M17.5 14.5v.01"/>',
         phone: '<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/>',
@@ -1931,8 +2582,8 @@
     function policyIcon(name, size) {
         return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + POLICY_ICONS[name] + '</svg>';
     }
-    const POLICY_PHONE = { icon: 'phone', title: 'Cómo te avisamos', text: 'Te avisamos por celular cuando tu pedido esté listo. Revisa que tu número esté bien escrito: 10 dígitos y empieza con 09.' };
-    const POLICY_LIMITS = { icon: 'bag', title: 'Antes de pedir', text: 'Elige tu talla antes de agregar cada prenda. Puedes pedir hasta ' + MAX_PER_LINE + ' unidades de un mismo artículo y ' + MAX_ITEMS + ' artículos en total.' };
+    const POLICY_PHONE = { icon: 'phone', title: 'Cómo te avisamos', text: 'Te avisamos por celular cuando esté listo. Revisa tu número: 10 dígitos, empieza con 09.' };
+    const POLICY_LIMITS = { icon: 'bag', title: 'Antes de pedir', text: 'Elige tu talla antes de agregar. Máximo ' + MAX_PER_LINE + ' unidades por artículo y ' + MAX_ITEMS + ' en total.' };
     const POLICY_DATA = PAGO_TRANSFERENCIA ? {
         short: [
             { icon: 'store', text: 'Retiro o envío a domicilio' },
@@ -1951,8 +2602,8 @@
             { icon: 'phone', text: 'Te avisamos por celular' }
         ],
         full: [
-            { icon: 'store', title: 'Cómo recibes tu pedido', text: 'Por ahora los pedidos se retiran en nuestro local: ' + STORE_ADDRESS + '.' },
-            { icon: 'cash', title: 'Cómo pagas', text: 'El pago se hace en el local, al momento de retirar tu pedido. No pagas nada por internet.' },
+            { icon: 'store', title: 'Cómo recibes tu pedido', text: 'Retira tu pedido en nuestro local: ' + STORE_ADDRESS + '.' },
+            { icon: 'cash', title: 'Cómo pagas', text: 'Pagas en el local al retirar tu pedido. No pagas nada por internet.' },
             POLICY_PHONE, POLICY_LIMITS
         ]
     };
@@ -1963,32 +2614,34 @@
     const policyCloseBtn = document.getElementById('policy-close');
     let policyReturnTo = null;
 
-    POLICY_DATA.short.forEach(function (it) {
+    // Resumen: un solo icono y una sola línea de texto (no parecen varios enlaces)
+    (function () {
         const sp = document.createElement('span');
         sp.className = 'pb-item';
-        sp.innerHTML = policyIcon(it.icon, 16);
+        sp.innerHTML = policyIcon('info', 16);
         const tx = document.createElement('span');
-        tx.textContent = it.text;
+        tx.textContent = 'Políticas de envío y pago';
         sp.appendChild(tx);
         document.getElementById('policy-bar-items').appendChild(sp);
-    });
+    })();
     POLICY_DATA.full.forEach(function (it) {
         const sec = document.createElement('section');
         sec.className = 'pd-card pol-item';
         const ico = document.createElement('span');
         ico.className = 'pol-ico';
         ico.innerHTML = policyIcon(it.icon, 18);
-        const box = document.createElement('div');
+        const head = document.createElement('div');
+        head.className = 'pol-head';
         const h = document.createElement('h3');
         h.className = 'pd-h';
         h.textContent = it.title;
         const para = document.createElement('p');
         para.className = 'pd-desc';
         para.textContent = it.text;
-        box.appendChild(h);
-        box.appendChild(para);
-        sec.appendChild(ico);
-        sec.appendChild(box);
+        head.appendChild(ico);
+        head.appendChild(h);
+        sec.appendChild(head);
+        sec.appendChild(para);
         policyBody.appendChild(sec);
     });
 
@@ -2066,10 +2719,11 @@
         const k = e.key;
         if (k !== 'ArrowRight' && k !== 'ArrowLeft' && k !== 'ArrowDown' && k !== 'ArrowUp') return;
         const t = e.target;
+        if (t && t.id === 'confirm-title' && (k === 'ArrowDown' || k === 'ArrowRight')) { e.preventDefault(); document.getElementById('checkout-download').focus(); return; }
         if (!t || t.tagName !== 'BUTTON') return;
         let dlg = null, vertical = false;
         if (!cartOverlay.classList.contains('hidden') && cartPanel.contains(t)) dlg = cartPanel;
-        else if (!checkoutOverlay.classList.contains('hidden') && checkoutDialog.contains(t) && !t.closest('#city-select')) { dlg = checkoutDialog; vertical = true; }
+        else if (!checkoutOverlay.classList.contains('hidden') && checkoutDialog.contains(t) && !t.closest('#city-select')) { dlg = checkoutDialog; vertical = confirmStep.classList.contains('hidden'); }
         if (!dlg) return;
         if (vertical && k !== 'ArrowDown' && k !== 'ArrowUp') return;
         const list = focusableIn(dlg);
@@ -2102,6 +2756,7 @@
         if (firstInvalid) {
             const n = checkoutForm.querySelectorAll('[aria-invalid="true"]').length;
             showFormSummary(n === 1 ? 'Hay 1 campo por corregir.' : 'Hay ' + n + ' campos por corregir.');
+            toast(n === 1 ? '1 campo por corregir' : n + ' campos por corregir', 'warn', 'Revisa tus datos');
             firstInvalid.focus();
             return;
         }
@@ -2109,22 +2764,24 @@
 
         const metodo = currentPay();
         const pickup = metodo === 'Retiro';
-        const nombre = clean(document.getElementById('nombre').value);
+        const nombre = titleCase(clean(document.getElementById('nombre').value));
         const direccion = clean(document.getElementById('direccion').value);
         const ciudad = document.getElementById('ciudad').value;
         const totalTxt = money(cartCents());
 
         const order = {
+            moneda: 'USD',
+            creado_en: new Date().toISOString(),
             cliente: {
                 nombre: nombre,
                 telefono: document.getElementById('telefono').value,
-                email: clean(document.getElementById('email').value)
+                email: clean(document.getElementById('email').value).toLowerCase()
             },
             entrega: pickup ? { tipo: 'retiro_local' } : { tipo: 'domicilio', direccion: direccion, ciudad: ciudad },
             pago: { metodo: pickup ? 'pago_al_retirar' : 'transferencia' },
             items: Object.keys(cart).map(function (key) {
                 const parts = key.split('|');
-                return { id: parts[0], talla: parts[1] || null, cantidad: cart[key] };
+                return { id: parts[0], sku: parts[0], talla: parts[1] || null, cantidad: cart[key] };
             })
         };
 
@@ -2145,6 +2802,36 @@
                 ? 'Te avisaremos por celular cuando esté listo para retirar.'
                 : 'Entrega estimada: 2 a 4 días laborables vía Servientrega.';
 
+            // En retiro, el total y la forma de pago ya están arriba y el aviso de abajo dice cómo te contactamos: no se repite
+            document.querySelector('#checkout-confirm-step .conf-note').style.display = pickup ? 'none' : '';
+
+            // Aviso de envío del comprobante por SMS o correo
+            const tel = order.cliente.telefono, mail = order.cliente.email;
+            const avisoEl = document.getElementById('confirm-aviso');
+            avisoEl.textContent = '';
+            function addTxt(t) { avisoEl.appendChild(document.createTextNode(t)); }
+            function addStrong(t) { const s = document.createElement('strong'); s.textContent = t; avisoEl.appendChild(s); }
+            addTxt('Te enviaremos este comprobante por SMS al ');
+            addStrong(tel);
+            if (mail) { addTxt(' y por correo a '); addStrong(mail); }
+            addTxt('. Revísalo para confirmar tu pedido.');
+
+            lastReceipt = {
+                codigo: res.codigo,
+                nombre: nombre,
+                telefono: tel,
+                correo: mail,
+                entregaLbl: pickup ? 'Retiro en' : 'Entrega en',
+                entrega: pickup ? STORE_ADDRESS : direccion + ', ' + ciudad,
+                pago: pickup ? 'Pagas al retirar' : 'Transferencia bancaria',
+                total: totalTxt,
+                items: order.items.map(function (it) {
+                    const pr = findProduct(it.id);
+                    return { qty: it.cantidad, name: pr.name, talla: it.talla, sub: money(Math.round(pr.price * 100) * it.cantidad) };
+                }),
+                fecha: new Date().toLocaleString('es-EC', { dateStyle: 'medium', timeStyle: 'short' })
+            };
+
             formStep.classList.add('hidden');
             confirmStep.classList.remove('hidden');
             checkoutDialog.classList.remove('dlg-wide');
@@ -2164,6 +2851,126 @@
     });
 
     document.getElementById('checkout-done').addEventListener('click', closeCheckout);
+
+    // ---------- COMPROBANTE DESCARGABLE (imagen PNG dibujada en un canvas) ----------
+    let lastReceipt = null;
+    function paintReceipt(ctx, d, W) {
+        const pad = 44, inner = W - pad * 2, serif = 'Georgia, "Times New Roman", serif';
+        let y = 0;
+        function wrap(text, font, maxW) {
+            ctx.font = font;
+            const words = String(text).split(' '), lines = [];
+            let cur = '';
+            words.forEach(function (w) {
+                const t = cur ? cur + ' ' + w : w;
+                if (ctx.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else { cur = t; }
+            });
+            if (cur) lines.push(cur);
+            return lines;
+        }
+        function rect(x, yy, w, h, fill, stroke, r) {
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(x, yy, w, h, r || 0); else ctx.rect(x, yy, w, h);
+            if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+            if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1.5; ctx.stroke(); }
+        }
+        function text(t, x, yy, font, color, align) {
+            ctx.font = font; ctx.fillStyle = color; ctx.textAlign = align || 'left'; ctx.textBaseline = 'alphabetic';
+            ctx.fillText(t, x, yy);
+        }
+        // Fondo y barra de marca
+        return function (draw) {
+            if (draw) { rect(0, 0, W, 4000, '#0D0D0D'); rect(0, 0, W, 10, '#84224A'); }
+            y = 56;
+            if (draw) {
+                text('NOCTIS WEAR', W / 2, y, '700 30px ' + serif, '#F5F5F0', 'center');
+            }
+            y += 34;
+            if (draw) text('Comprobante de pedido', W / 2, y, '400 18px ' + serif, '#c4c8d0', 'center');
+            y += 36;
+            // Código
+            if (draw) {
+                rect(pad, y, inner, 92, '#1A1A1A', '#84224A', 14);
+                text('CÓDIGO DE PEDIDO', W / 2, y + 30, '400 14px ' + serif, '#c4c8d0', 'center');
+                text(d.codigo, W / 2, y + 68, '700 34px ' + serif, '#F5F5F0', 'center');
+            }
+            y += 92 + 28;
+            // Datos
+            const rows = [['A nombre de', d.nombre], ['Celular', d.telefono]];
+            if (d.correo) rows.push(['Correo', d.correo]);
+            rows.push([d.entregaLbl, d.entrega], ['Forma de pago', d.pago], ['Fecha', d.fecha]);
+            rows.forEach(function (r) {
+                const lines = wrap(r[1], '700 18px ' + serif, inner - 190);
+                if (draw) {
+                    text(r[0], pad, y, '400 17px ' + serif, '#c4c8d0');
+                    lines.forEach(function (ln, i) { text(ln, W - pad, y + i * 24, '700 18px ' + serif, '#F5F5F0', 'right'); });
+                }
+                y += Math.max(1, lines.length) * 24 + 12;
+            });
+            y += 6;
+            if (draw) { ctx.fillStyle = '#3d3d3d'; ctx.fillRect(pad, y, inner, 1); }
+            y += 32;
+            if (draw) text('TU PEDIDO', pad, y, '400 14px ' + serif, '#c4c8d0');
+            y += 28;
+            d.items.forEach(function (it) {
+                const label = it.qty + ' × ' + it.name + (it.talla ? '  (Talla ' + it.talla + ')' : '');
+                const lines = wrap(label, '400 18px ' + serif, inner - 110);
+                if (draw) {
+                    lines.forEach(function (ln, i) { text(ln, pad, y + i * 24, '400 18px ' + serif, '#F5F5F0'); });
+                    text(it.sub, W - pad, y, '700 18px ' + serif, '#F5F5F0', 'right');
+                }
+                y += lines.length * 24 + 10;
+            });
+            y += 4;
+            if (draw) { ctx.fillStyle = '#3d3d3d'; ctx.fillRect(pad, y, inner, 1); }
+            y += 38;
+            if (draw) {
+                text('TOTAL', pad, y, '400 17px ' + serif, '#c4c8d0');
+                text(d.total, W - pad, y, '700 32px ' + serif, '#F5F5F0', 'right');
+            }
+            y += 34;
+            // Aviso de envío
+            const aviso = 'Te enviaremos este comprobante por SMS al ' + d.telefono + (d.correo ? ' y por correo a ' + d.correo : '') + '. Revísalo para confirmar tu pedido.';
+            const al = wrap(aviso, '400 16px ' + serif, inner - 32);
+            const boxH = al.length * 22 + 28;
+            if (draw) {
+                rect(pad, y, inner, boxH, '#0b2433', '#38bdf8', 12);
+                al.forEach(function (ln, i) { text(ln, pad + 16, y + 30 + i * 22, '400 16px ' + serif, '#e0f2fe'); });
+            }
+            y += boxH + 30;
+            if (draw) text('Gracias por vestir tu identidad con Noctis Wear', W / 2, y, 'italic 400 15px ' + serif, '#c4c8d0', 'center');
+            y += 40;
+            return y;
+        };
+    }
+    function downloadReceipt() {
+        if (!lastReceipt) return;
+        const W = 800, S = 2;
+        const scratch = document.createElement('canvas').getContext('2d');
+        const H = paintReceipt(scratch, lastReceipt, W)(false);
+        const c = document.createElement('canvas');
+        c.width = W * S; c.height = H * S;
+        const ctx = c.getContext('2d');
+        ctx.scale(S, S);
+        paintReceipt(ctx, lastReceipt, W)(true);
+        const fileName = 'comprobante-' + lastReceipt.codigo + '.png';
+        function save(url, revoke) {
+            const a = document.createElement('a');
+            a.href = url; a.download = fileName;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            if (revoke) setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+            toast(fileName, 'ok', 'Comprobante descargado');
+        }
+        if (c.toBlob) {
+            c.toBlob(function (blob) {
+                if (blob) save(URL.createObjectURL(blob), true);
+                else save(c.toDataURL('image/png'), false);
+            }, 'image/png');
+        } else {
+            save(c.toDataURL('image/png'), false);
+        }
+    }
+    document.getElementById('checkout-download').addEventListener('click', downloadReceipt);
 
     renderCart();
 })();
